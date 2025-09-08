@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "444759864301",
+    "project_id": "iconnectv2-49c98",
+    "storage_bucket": "iconnectv2-49c98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:444759864301:android:895033bfa62944e4c8ade4",
+        "android_client_info": {
+          "package_name": "com.example.pallon_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "444759864301-u38ue6s39jjnkeuhseisj7tftkfusgip.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdnvAsj31HgOwroU3RO7G-QK178by3eJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "444759864301-kcmhlopmi32t4l1mps1j2d3tvctn22o1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
