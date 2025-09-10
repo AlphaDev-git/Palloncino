@@ -1,21 +1,32 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pallon_app/models/user_model.dart';
-
 import '../../../Core/Widgets/common_widgets.dart';
+import '../../MainScreen/function/main_function.dart';
 
 
 class HomeWidget extends StatefulWidget{
-  UserModel userModel;
-  HomeWidget(this.userModel);
   @override
   State<StatefulWidget> createState() {
-    return _HomeWidget(userModel);
+    return _HomeWidget();
   }
 }
 
 class _HomeWidget extends State<HomeWidget>{
-  UserModel userModel;
-  _HomeWidget(this.userModel);
+  final FirebaseAuth _auth=FirebaseAuth.instance;
+  UserModel userModel=UserModel(doc: "doc", email: "email", phone: "phone", name: "name", pic: "pic", type: "type");
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    GetUserType();
+  }
+  void GetUserType()async{
+    userModel =await GetUserData(_auth.currentUser!.uid);
+    setState(() {
+      userModel;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery

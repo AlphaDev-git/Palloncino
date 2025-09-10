@@ -42,7 +42,7 @@ class _StaffWidget extends State<StaffWidget>{
   @override
   Widget build(BuildContext context) {
     final List<Widget> _screens = [
-      HomeView(userModel), // Initial state for HomeView
+      HomeView(), // Initial state for HomeView
       ChatView(),
       AddReqView(),
       CalenderView(),
