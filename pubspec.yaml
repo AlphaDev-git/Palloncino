@@ -31,6 +31,7 @@ dependencies:
   googleapis_auth: ^2.0.0
   restart_app: ^1.3.2
   url_strategy: ^0.3.0
+  dash_chat_2: ^0.0.21
 flutter_icons:
   android: true
   image_path: "lib/core/Utils/assets/images/logo.png"
