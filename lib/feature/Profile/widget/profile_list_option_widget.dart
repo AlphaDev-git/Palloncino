@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/feature/items/view/item_view.dart';
 import 'package:pallon_app/models/user_model.dart';
 
 import 'custome_optione_tile.dart';
@@ -20,8 +21,8 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
             () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
-    buildOptionTile(context, 'Add New Item', Icons.add_box_outlined,
-            () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
+    buildOptionTile(context, 'Items', Icons.storefront_sharp,
+            () =>Get.to(ItemView(),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Language', Icons.language,
