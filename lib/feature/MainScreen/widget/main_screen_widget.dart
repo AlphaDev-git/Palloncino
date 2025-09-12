@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/feature/Client/view/client_main_view.dart';
 import 'package:pallon_app/feature/MainScreen/function/main_function.dart';
 import 'package:pallon_app/feature/Staff/view/staff_view.dart';
 import 'package:pallon_app/models/user_model.dart';
@@ -32,7 +33,7 @@ class _MainScreenWidget extends State<MainScreenWidget>{
   }
   @override
   Widget build(BuildContext context) {
-    return userModel!.type=="client"?Center():StaffView();
+    return userModel!.type=="client"?ClientMainView():StaffView();
   }
 
 }

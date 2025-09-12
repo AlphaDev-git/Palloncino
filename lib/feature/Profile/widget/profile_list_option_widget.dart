@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/feature/Profile/function/profile_function.dart';
 import 'package:pallon_app/feature/items/view/item_view.dart';
 import 'package:pallon_app/models/user_model.dart';
 
@@ -38,12 +39,10 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Remove Account', Icons.remove_circle_outline,
-            () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
-            duration: Duration(seconds: 1))),
+            () =>RemoveAccount(context)),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Logout', Icons.logout_outlined,
-            () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
-            duration: Duration(seconds: 1))),
+            () =>logout(context)),
   ];
   List<Widget> client=[
     SizedBox(height: screenHeight * 0.01),
@@ -64,8 +63,7 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Logout', Icons.logout_outlined,
-            () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
-            duration: Duration(seconds: 1))),
+            () =>logout(context)),
   ];
   List<Widget> staff=[
     SizedBox(height: screenHeight * 0.01),
@@ -86,8 +84,7 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Logout', Icons.logout_outlined,
-            () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
-            duration: Duration(seconds: 1))),
+            () =>logout(context)),
   ];
   return user.type=="Admin"?admin:
   user.type=="staff"?staff:
