@@ -24,6 +24,7 @@ class _MainScreenWidget extends State<MainScreenWidget>{
     // TODO: implement initState
     super.initState();
     GetUserType();
+    getPermesion();
   }
   void GetUserType()async{
     userModel =await GetUserData(_auth.currentUser!.uid);
