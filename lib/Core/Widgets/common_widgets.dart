@@ -9,9 +9,9 @@ Widget buildProjectCard(BuildContext context,
       required Color statusColor}) {
   final screenWidth = MediaQuery.of(context).size.width;
   return InkWell(
-    onTap: (){
-      Get.to(ProjectView(),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
-    },
+    // onTap: (){
+    //   //Get.to(ProjectView(),transition: Transition.cupertinoDialog,duration: Duration(seconds: 1));
+    // },
     child: Container(
       decoration: BoxDecoration(
         color: Colors.white,

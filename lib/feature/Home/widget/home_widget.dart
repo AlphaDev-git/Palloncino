@@ -1,5 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pallon_app/feature/AddStaff/view/add_staff_view.dart';
+import 'package:pallon_app/feature/Requset/view/req_list_view.dart';
+import 'package:pallon_app/feature/items/view/add_item_view.dart';
+import 'package:pallon_app/feature/items/view/item_view.dart';
 import 'package:pallon_app/models/user_model.dart';
 import '../../../Core/Widgets/common_widgets.dart';
 import '../../MainScreen/function/main_function.dart';
@@ -182,7 +187,7 @@ class _HomeWidget extends State<HomeWidget>{
                   horizontal: screenWidth * 0.08,
                   vertical: screenHeight * 0.02),
               child: Text(
-                'Projects',
+                'Access',
                 style: TextStyle(
                   fontSize: screenWidth * 0.05,
                   fontWeight: FontWeight.bold,
@@ -201,27 +206,42 @@ class _HomeWidget extends State<HomeWidget>{
                 crossAxisSpacing: screenWidth * 0.05,
                 childAspectRatio: 1.2,
                 children: [
-                  buildProjectCard(
-                    context,
-                    title: 'Personal to-do',
-                    status: 'Ongoing',
-                    statusColor: const Color(0xFF07933E),
+                  InkWell(
+                    onTap: (){
+                      Get.to(ReqViewList(),transition: Transition.downToUp,duration: Duration(seconds: 1));
+                    },
+                    child: buildProjectCard(
+                      context,
+                      title: 'Requset List',
+                      status: 'View List',
+                      statusColor: const Color(0xFF07933E),
+                    ),
+                  ),
+                  InkWell(
+                    child: buildProjectCard(
+                      context,
+                      title: 'Staff',
+                      status: 'View Staff',
+                      statusColor: const Color(0xFF07933E),
+                    ),
+                    onTap: (){
+                      Get.to(AddStaffView(),transition: Transition.topLevel,duration: Duration(seconds: 1));
+                    },
+                  ),
+                  InkWell(
+                    child: buildProjectCard(
+                      context,
+                      title: 'Items',
+                      status: 'Show Items',
+                      statusColor: const Color(0xFFCE232B),
+                    ),
+                    onTap: (){
+                      Get.to(ItemView(),transition: Transition.topLevel,duration: Duration(seconds: 1));
+                    },
                   ),
                   buildProjectCard(
                     context,
-                    title: 'Work to-do',
-                    status: 'In Process',
-                    statusColor: const Color(0xFF07933E),
-                  ),
-                  buildProjectCard(
-                    context,
-                    title: 'High Priority Task',
-                    status: 'Go to task',
-                    statusColor: const Color(0xFFCE232B),
-                  ),
-                  buildProjectCard(
-                    context,
-                    title: 'Personal Things',
+                    title: 'Order',
                     status: 'On-hold',
                     statusColor: const Color(0xFFCE232B),
                   ),

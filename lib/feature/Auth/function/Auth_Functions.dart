@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get/get.dart';
@@ -20,7 +23,7 @@ void SignInMethod(String email , String password,BuildContext context)async{
   }
 }
 
-void SignUpMethod(String email,String password, String phone,BuildContext context)async{
+void SignUpMethod(String name,File img,String email,String password, String phone,BuildContext context)async{
   FirebaseAuth auth=FirebaseAuth.instance;
   FirebaseFirestore firestore=FirebaseFirestore.instance;
   try{
@@ -29,8 +32,8 @@ void SignUpMethod(String email,String password, String phone,BuildContext contex
         'doc':auth.currentUser!.uid,
         'phone':phone,
         'email':email,
-        'name':'',
-        'pic':'',
+        'name':name,
+        'pic':"",
         'type':'client'
       }).then((value){
         Get.back();

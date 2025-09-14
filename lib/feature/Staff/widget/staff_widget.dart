@@ -4,8 +4,6 @@ import 'package:pallon_app/feature/AddRequest/view/add_req_view.dart';
 import 'package:pallon_app/feature/Calender/view/calender_view.dart';
 import 'package:pallon_app/feature/Chat/view/chat_view.dart';
 import 'package:pallon_app/feature/Profile/view/profile_view.dart';
-
-import '../../../Core/Widgets/common_widgets.dart';
 import '../../../models/user_model.dart';
 import '../../Home/view/home_view.dart';
 import '../../MainScreen/function/main_function.dart';
@@ -25,7 +23,7 @@ class _StaffWidget extends State<StaffWidget>{
   FirebaseAuth _auth=FirebaseAuth.instance;
   late PageController _pageController;
   int _selectedIndex = 0;
-
+  int currentIndex = 0;
   @override
   void initState() {
     // TODO: implement initState
@@ -53,27 +51,13 @@ class _StaffWidget extends State<StaffWidget>{
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body:PageView(
-        controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-        children: _screens,
-      ),
+      body:_screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: _selectedIndex,
+        currentIndex: currentIndex,
         onTap: (index) {
           setState(() {
-            _selectedIndex = index;
-            // Animate to the selected page
-            _pageController.animateToPage(
-              index,
-              duration: const Duration(milliseconds: 300), // Animation duration
-              curve: Curves.slowMiddle, // Animation curve
-            );
+            currentIndex = index;
           });
         },
         backgroundColor: Colors.white,

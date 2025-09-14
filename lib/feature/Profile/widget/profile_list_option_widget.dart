@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/feature/AddStaff/view/add_staff_view.dart';
 import 'package:pallon_app/feature/Profile/function/profile_function.dart';
 import 'package:pallon_app/feature/items/view/item_view.dart';
 import 'package:pallon_app/models/user_model.dart';
@@ -19,7 +20,7 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Add New Staff', Icons.person_add_alt,
-            () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
+            () =>Get.to(AddStaffView(),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Items', Icons.storefront_sharp,

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pallon_app/feature/Auth/function/Auth_Functions.dart';
 import 'BottomWaveClipper.dart';
@@ -15,6 +18,8 @@ class AuthSignupWidget extends StatefulWidget{
 
 
 class _AuthSignupWidget extends State<AuthSignupWidget>{
+  File? _image;
+  TextEditingController _name=TextEditingController();
   TextEditingController _email=TextEditingController();
   TextEditingController _pass=TextEditingController();
   TextEditingController _conPass=TextEditingController();
@@ -75,7 +80,64 @@ class _AuthSignupWidget extends State<AuthSignupWidget>{
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.05),
-                    // Email Field
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: screenHeight * 0.03),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              onTap: _pickImage,
+                              child: CircleAvatar(
+                                radius: screenWidth * 0.15,
+                                backgroundColor: Color(0xFF007530),
+                                child: _image != null
+                                    ? ClipOval(
+                                  child: Image.file(
+                                    _image!,
+                                    width: screenWidth * 0.3,
+                                    height: screenWidth * 0.3,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ) :Icon(
+                                  Icons.person,
+                                  size: screenWidth * 0.15,
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.045,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    TextFormField(
+                      controller: _name,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person),
+                        hintText: 'UserName',
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: screenHeight * 0.02,
+                            horizontal: screenWidth * 0.05),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    SizedBox(height: screenHeight * 0.03),
                     Text(
                       'Email',
                       style: TextStyle(
@@ -189,16 +251,18 @@ class _AuthSignupWidget extends State<AuthSignupWidget>{
                       height: screenHeight * 0.07,
                       child: ElevatedButton(
                         onPressed: () {
-                          if(_pass.text==_conPass.text){
-                            setState(() {
-                              _show=true;
-                            });
-                            SignUpMethod(_email.text, _pass.text, _phone.text, context);
-                            Future.delayed(const Duration(seconds: 5)).then((value) {
+                          if(_image != null){
+                            if(_pass.text==_conPass.text){
                               setState(() {
-                                _show=false;
+                                _show=true;
                               });
-                            });
+                              SignUpMethod(_name.text,_image!,_email.text, _pass.text, _phone.text, context);
+                              Future.delayed(const Duration(seconds: 5)).then((value) {
+                                setState(() {
+                                  _show=false;
+                                });
+                              });
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -252,4 +316,21 @@ class _AuthSignupWidget extends State<AuthSignupWidget>{
     );
   }
 
+  void _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Image selection simulated!'),
+        backgroundColor: Color(0xFF07933E),
+      ),
+    );
+  }
 }

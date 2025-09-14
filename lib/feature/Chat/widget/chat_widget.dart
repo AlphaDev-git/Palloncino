@@ -1,6 +1,7 @@
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pallon_app/feature/AddStaff/function/add_staff_function.dart';
 import 'package:pallon_app/feature/Chat/function/chat_function.dart';
 import '../../../models/user_model.dart';
 import '../../MainScreen/function/main_function.dart';
@@ -18,7 +19,9 @@ class ChatWidget extends StatefulWidget{
 class _ChatWidget extends State<ChatWidget>{
   List<ChatMessage> messages=[];
   final ChatUser _chatUser=ChatUser(id: "1",firstName: "Momen");
+  List<ChatUser>AllStaff=[];
   final FirebaseAuth _auth=FirebaseAuth.instance;
+  List<UserModel> staff=[];
   UserModel userModel=UserModel(doc: "doc", email: "email", phone: "phone", name: "name", pic: "pic", type: "type");
   @override
   void initState() {
@@ -26,16 +29,30 @@ class _ChatWidget extends State<ChatWidget>{
     super.initState();
     GetUserType();
   }
+  void SetupUserList(){
+    for(int i=0;i<staff.length;i++){
+      AllStaff.add(
+        ChatUser(
+            id: staff[i].doc,
+          firstName: staff[i].name,
+          profileImage: staff[i].pic,
+        )
+      );
+    }
+  }
   void GetUserType()async{
     userModel =await GetUserData(_auth.currentUser!.uid);
     messages=await getChat();
+    staff=await GetAllStaff();
     setState(() {
+      staff;
       userModel;
       messages;
       _chatUser.id=userModel.doc;
       _chatUser.firstName=userModel.name;
       _chatUser.profileImage=userModel.pic;
     });
+    SetupUserList();
   }
   @override
   Widget build(BuildContext context) {

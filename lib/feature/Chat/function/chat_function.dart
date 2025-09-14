@@ -28,7 +28,6 @@ Future<List<ChatMessage>> getChat()async{
           user: user,
           createdAt: DateTime.parse(value.docs[i].get('date')))
       );
-
     }
   }).whenComplete((){
     return chats;

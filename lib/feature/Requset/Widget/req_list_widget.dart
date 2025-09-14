@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pallon_app/feature/items/function/item_action.dart';
-import 'package:pallon_app/feature/items/view/add_item_view.dart';
-import 'package:pallon_app/feature/items/widget/custom_item_table.dart';
+import 'package:pallon_app/feature/Requset/Widget/custom_list_req.dart';
 
-class ItemWidget extends StatefulWidget{
+
+
+class ReqListWidget extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    return _ItemWidget();
+    return _ReqListWidget();
   }
 
 }
 
 
-class _ItemWidget extends State<ItemWidget>{
+class _ReqListWidget extends State<ReqListWidget>{
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery
@@ -61,24 +60,25 @@ class _ItemWidget extends State<ItemWidget>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Items',
+                            'All Request',
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
                               color: Colors.black,
                             ),
                           ),
+                          SizedBox(height: screenHeight * 0.005),
                         ],
                       ),
-                      IconButton(onPressed: (){
-                       Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
-                      }, icon: Icon(Icons.add,color: Colors.black,))
                     ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: screenHeight * 0.045),
-            CustomeItemTable(context)
+            SizedBox(height: 5,),
+            SizedBox(
+              height: screenHeight*0.96,
+              child: CustomListReq(context),
+            )
           ],
         ),
       ),
