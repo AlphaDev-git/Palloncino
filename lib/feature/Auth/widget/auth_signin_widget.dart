@@ -4,6 +4,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pallon_app/feature/Auth/function/Auth_Functions.dart';
 import 'package:pallon_app/feature/Auth/view/auth_signup_view.dart';
 import 'package:pallon_app/feature/Auth/view/forget_password_view.dart';
+import '../../../Core/Widgets/common_widgets.dart';
 import 'BottomWaveClipper.dart';
 import 'TopWaveClipper.dart';
 
@@ -174,11 +175,23 @@ class _AuthSignInWidget extends State<AuthSignInWidget>{
                       height: screenHeight * 0.07,
                       child: ElevatedButton(
                         onPressed: () {
-                          setState(() {
-                            _show=true;
-                          });
-                          SignInMethod(_email.text, _pass.text, context);
-
+                          if(_email!=""){
+                            if(_pass!=""){
+                              setState(() {
+                                _show=true;
+                              });
+                              SignInMethod(_email.text, _pass.text, context);
+                              setState(() {
+                                _show=false;
+                              });
+                            }
+                            else{
+                              ErrorCustom(context, "Please Enter Your Name");
+                            }
+                          }
+                          else{
+                            ErrorCustom(context, "Please Enter Your Name");
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFCE232B),

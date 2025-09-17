@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/Core/Widgets/common_widgets.dart';
 import '../../splash/views/splash_view.dart';
 
 void SignInMethod(String email , String password,BuildContext context)async{
@@ -13,7 +14,7 @@ void SignInMethod(String email , String password,BuildContext context)async{
     });
   }
   catch(e){
-    print(e);
+    ErrorCustom(context, e.toString());
   }
 }
 
@@ -35,6 +36,6 @@ void SignUpMethod(String name,File img,String email,String password, String phon
     });
   }
   catch(e){
-    print(e);
+    ErrorCustom(context, e.toString());
   }
 }

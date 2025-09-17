@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:pallon_app/Core/Widgets/common_widgets.dart';
 import 'package:pallon_app/feature/Auth/function/Auth_Functions.dart';
 import 'BottomWaveClipper.dart';
 import 'TopWaveClipper.dart';
@@ -252,12 +253,33 @@ class _AuthSignupWidget extends State<AuthSignupWidget>{
                       child: ElevatedButton(
                         onPressed: () {
                           if(_image != null){
-                            if(_pass.text==_conPass.text){
-                              setState(() {
-                                _show=true;
-                              });
-                              SignUpMethod(_name.text,_image!,_email.text, _pass.text, _phone.text, context);
+                            if(_pass.text==_conPass.text&&_pass.text!=""){
+                              if(_name.text!=""){
+                                if(_email.text!=""){
+                                  if(_phone.text!=""){
+                                    setState(() {
+                                      _show=true;
+                                    });
+                                    SignUpMethod(_name.text,_image!,_email.text, _pass.text, _phone.text, context);
+                                  }
+                                  else{
+                                    ErrorCustom(context, "Please Enter Your Phone");
+                                  }
+                                }
+                                else{
+                                  ErrorCustom(context, "Please Enter Your Email");
+                                }
+                              }
+                              else{
+                                ErrorCustom(context, "Please Enter Your Name");
+                              }
                             }
+                            else{
+                              ErrorCustom(context, "Password Not Match");
+                            }
+                          }
+                          else{
+                            ErrorCustom(context, "Please Choose Your Image Profile");
                           }
                         },
                         style: ElevatedButton.styleFrom(
