@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pallon_app/feature/Auth/function/Auth_Functions.dart';
 import 'package:pallon_app/feature/Auth/view/auth_signup_view.dart';
+import 'package:pallon_app/feature/Auth/view/forget_password_view.dart';
 import 'BottomWaveClipper.dart';
 import 'TopWaveClipper.dart';
 
@@ -154,7 +155,9 @@ class _AuthSignInWidget extends State<AuthSignInWidget>{
                           ],
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.to(ForgetPasswordView(),transition: Transition.fadeIn,duration: Duration(seconds: 1));
+                          },
                           child: Text(
                             'Forgot Password?',
                             style: TextStyle(

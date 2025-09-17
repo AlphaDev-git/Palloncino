@@ -85,3 +85,13 @@ Widget buildAvatar({bool isMore = false, int count = 0}) {
         : null, // For simplicity, we're not using a real image.
   );
 }
+
+
+void ErrorCustom(BuildContext context,String text){
+   ScaffoldMessenger.of(context).showSnackBar(
+     SnackBar(
+      content: Text(text),
+      backgroundColor: Colors.red,
+    ),
+  );
+}

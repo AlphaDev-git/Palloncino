@@ -81,6 +81,7 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
   }
   void _addItemToTable() {
     if (_formKey.currentState!.validate() && _selectedItem != null) {
+
       final count = int.tryParse(_countController.text);
       double price=_selectedItem!.price*count!;
       if (count != null && count > 0) {
