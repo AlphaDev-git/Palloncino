@@ -257,11 +257,6 @@ class _AuthSignupWidget extends State<AuthSignupWidget>{
                                 _show=true;
                               });
                               SignUpMethod(_name.text,_image!,_email.text, _pass.text, _phone.text, context);
-                              Future.delayed(const Duration(seconds: 5)).then((value) {
-                                setState(() {
-                                  _show=false;
-                                });
-                              });
                             }
                           }
                         },

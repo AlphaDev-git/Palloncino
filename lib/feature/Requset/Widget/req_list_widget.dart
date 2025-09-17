@@ -76,7 +76,8 @@ class _ReqListWidget extends State<ReqListWidget>{
             ),
             SizedBox(height: 5,),
             SizedBox(
-              height: screenHeight*0.96,
+              height: screenHeight*1.96,
+
               child: CustomListReq(context),
             )
           ],

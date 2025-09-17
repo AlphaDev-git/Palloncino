@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pallon_app/feature/Requset/Widget/req_card.dart';
+import 'package:pallon_app/feature/Requset/Widget/req_details_widget.dart';
 import 'package:pallon_app/models/req_data_model.dart';
 
 
@@ -39,8 +41,10 @@ Widget CustomListReq(BuildContext context){
               deposite: message.get('deposit'), design: message.get('desgin'), notes: message.get('notes'),
               ownerOfevent: message.get('ownerofevent'),
               status: message.get('status'), typeby: message.get('typeCreate'), typeOfBuilding: message.get('typeofbuilding'),
-              typeOfEvent: message.get('typeofevent')));
+              typeOfEvent: message.get('typeofevent'),
+          branch:message.get("branch") ,typebank: message.get("banktype")));
         }
+
         return ListView.builder(
             itemCount: lists.length,
             itemBuilder: (context,index){

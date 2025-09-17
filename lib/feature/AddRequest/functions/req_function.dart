@@ -34,7 +34,7 @@ Future<List<ItemModel>> GetItemsList()async{
 }
 
 
-void Submit(UserModel user,bool des,ReqModel req,List<ItemModel> items,String notes,double deposit,double fees,double total)async{
+void Submit(UserModel user,bool des,ReqModel req,List<ItemModel> items,String notes,double deposit,double fees,double total,String branch,String bank)async{
   try{
     String doc="Doc${DateTime.now().toString()}";
     await _firestore.collection('req').doc(doc).set({
@@ -54,7 +54,9 @@ void Submit(UserModel user,bool des,ReqModel req,List<ItemModel> items,String no
       'deposit':deposit.toString(),
       'total':total.toString(),
       'fees':fees.toString(),
-      'notes':notes
+      'notes':notes,
+      'banktype':bank,
+      'branch':branch
     }).whenComplete(()async{
       for(int i=0;i<items.length;i++){
         await _firestore.collection('req').doc(doc).collection('item').doc().set({
@@ -72,7 +74,7 @@ void Submit(UserModel user,bool des,ReqModel req,List<ItemModel> items,String no
   }
 }
 void Submit2(UserModel user,bool des,ReqModel req,
-    List<File>_images,List<ItemModel> items,String notes,double deposit,double fees,double total)async{
+    List<File>_images,List<ItemModel> items,String notes,double deposit,double fees,double total,String branch,String bank)async{
   try{
     List<String> urlImages=[];
     for(int i=0;i<_images.length;i++){
@@ -101,7 +103,9 @@ void Submit2(UserModel user,bool des,ReqModel req,
       'deposit':deposit.toString(),
       'total':total.toString(),
       'fees':fees.toString(),
-      'notes':notes
+      'notes':notes,
+      'banktype':bank,
+      'branch':branch
     }).whenComplete(()async{
       for(int i=0;i<items.length;i++){
         await _firestore.collection('req').doc(doc).collection('item').doc().set({

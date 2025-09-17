@@ -9,10 +9,10 @@ void delayAndNavigate(BuildContext context) {
   FirebaseAuth auth=FirebaseAuth.instance;
   Future.delayed(const Duration(seconds: 4)).then((value) {
     if(auth.currentUser !=null){
-      Get.to(MainScreenView(),duration: Duration(seconds: 1),transition: Transition.zoom);
+      Get.offAll(MainScreenView(),duration: Duration(seconds: 1),transition: Transition.zoom);
     }
     else{
-      Navigator.popAndPushNamed(context, AuthLoginView.id);
+      Get.offAll(AuthLoginView(),duration: Duration(seconds: 1),transition: Transition.zoom);
     }
   });
 }

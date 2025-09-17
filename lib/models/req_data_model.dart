@@ -21,9 +21,11 @@ class ReqDataModel{
   String typeOfEvent;
   List<String> des=[];
   List<ItemModel> item=[];
+  String typebank;
+  String branch;
   ReqDataModel({required this.doc, required this.name,required this.fees,required this.total, required this.des,required this.item,
   required this.float,required this.address,required this.date,required this.hour,required this.phone,
   required this.createby,required this.deposite, required this.design,required this.notes,
   required this.ownerOfevent,required this.status,required this.typeby,required this.typeOfBuilding,
-  required this.typeOfEvent});
+  required this.typeOfEvent,required this.branch,required this.typebank});
 }

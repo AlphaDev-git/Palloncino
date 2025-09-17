@@ -19,18 +19,21 @@ void SaveChat(ChatMessage message)async{
 
 Future<List<ChatMessage>> getChat()async{
   List<ChatMessage> chats=[];
-  await _firestore.collection('chat').get().then((value){
-    for(int i=0;i<value.size;i++){
-      ChatUser user=ChatUser(id: value.docs[i].get('userdoc'),firstName:value.docs[i].get('user') ,
-          profileImage:value.docs[i].get('pic') );
-      chats.add(ChatMessage(
-          text:value.docs[i].get('text') ,
-          user: user,
-          createdAt: DateTime.parse(value.docs[i].get('date')))
-      );
-    }
-  }).whenComplete((){
+  try{
+    await _firestore.collection('chat').get().then((value){
+      for(int i=value.size-1;i>0;i--){
+        ChatUser user=ChatUser(id: value.docs[i].get('userdoc'),firstName:value.docs[i].get('user') ,
+            profileImage:value.docs[i].get('pic') );
+        chats.add(ChatMessage(
+            text:value.docs[i].get('text') ,
+            user: user,
+            createdAt: DateTime.parse(value.docs[i].get('date')))
+        );
+      }
+    });
     return chats;
-  });
-  return chats;
+  }
+  catch(e){
+    return [];
+  }
 }

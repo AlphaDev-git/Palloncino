@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pallon_app/feature/Auth/view/auth_welcome_view.dart';
+import 'package:pallon_app/feature/splash/views/splash_view.dart';
 FirebaseAuth auth=FirebaseAuth.instance;
 FirebaseFirestore firestore=FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
@@ -32,8 +32,7 @@ void updateProfile(String name,String phone,File image,BuildContext context)asyn
 void logout(BuildContext context)async{
   try{
     await auth.signOut().whenComplete((){
-      Get.back();
-      Get.to(AuthLoginView(),transition: Transition.fadeIn,duration: Duration(seconds: 1));
+      Get.offAll(SplashView());
     });
   }
   catch(e){
@@ -50,8 +49,7 @@ void RemoveAccount(BuildContext context)async{
   try{
     await firestore.collection('user').doc(auth.currentUser!.uid).delete().whenComplete(()async{
       await auth.currentUser!.delete().whenComplete((){
-        Get.back();
-        Get.to(AuthLoginView(),transition: Transition.fadeIn,duration: Duration(seconds: 1));
+        Get.offAll(SplashView());
       });
     });
   }

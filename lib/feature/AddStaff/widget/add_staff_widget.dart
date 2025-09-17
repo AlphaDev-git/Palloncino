@@ -120,7 +120,7 @@ class _AddStaffWidget extends State<AddStaffWidget> {
                       items: clients.map((UserModel item) {
                         return DropdownMenuItem<UserModel>(
                           value: item,
-                          child: Text(item.name),
+                          child: Text("Name:${item.name}\nEmail:${item.email}"),
                         );
                       }).toList(),
                       onChanged: (UserModel? newValue) {

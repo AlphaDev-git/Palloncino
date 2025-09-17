@@ -30,11 +30,33 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
   final ImagePicker _picker = ImagePicker();
   List<ItemModel>_allItems=[];
   List<ItemModel> _selectedItems = [];
+  String? _selectbank;
+  String? _selectBranch;
+  List<String> bank=[
+    "نقدي",
+    "اجل",
+    "تحويل بنكي",
+    "الاهلي الروضة",
+    "الاهلي البساتين",
+    "الانماء",
+    "شبكة",
+    "مدي",
+    "فيزا"
+  ];
+  List<String> brach=[
+    "الروضة",
+    "البساتين",
+    "توصيل",
+    "توصيل و تركيب",
+    "شحن خارج جدة"
+  ];
   ItemModel? _selectedItem;
   final TextEditingController _countController = TextEditingController();
   final TextEditingController _notes = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   TextEditingController _deposit=TextEditingController();
+  TextEditingController _branch=TextEditingController();
+  TextEditingController _bank=TextEditingController();
   bool _showModel=false;
   @override
   void initState() {
@@ -346,6 +368,64 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
                   controller: _deposit,
                   keyboardType: TextInputType.number,
                 ),
+                const SizedBox(height: 32),
+                userModel.type=="client"?Text(""):DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: "Bank",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                  value: _selectbank,
+                  items: bank.map((String bankValue){
+                    return DropdownMenuItem<String>(
+                      value: bankValue,
+                      child: Text(bankValue),
+                    );
+                  }).toList(),
+                    onChanged: (String? newValue){
+                    setState(() {
+                      _selectbank = newValue!;
+                    });
+                    },
+                    validator: (value){
+                      if (value == null){
+                        return 'Please select an item';
+                      }
+                      return null;
+                    }
+                ),
+                const SizedBox(height: 32),
+                DropdownButtonFormField<String>(
+                    decoration: InputDecoration(
+                      labelText: "Receiving",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                    ),
+                    value: _selectBranch,
+                    items: brach.map((String bankValue){
+                      return DropdownMenuItem<String>(
+                        value: bankValue,
+                        child: Text(bankValue),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue){
+                      setState(() {
+                        _selectBranch = newValue!;
+                      });
+                    },
+                    validator: (value){
+                      if (value == null){
+                        return 'Please select an item';
+                      }
+                      return null;
+                    }
+                ),
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: SizedBox(
@@ -359,12 +439,13 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
                         double fees=_totlaprice - double.parse(_deposit.text);
                         if(_AddDesgin){
                           Submit2(userModel, _AddDesgin, widget.req,
-                              _images, _selectedItems, _notes.text, double.parse(_deposit.text), fees, _totlaprice);
+                              _images, _selectedItems, _notes.text, double.parse(_deposit.text), fees, _totlaprice,
+                          _selectBranch.toString(),_selectbank.toString());
                         }
                         else{
                           Submit(userModel, _AddDesgin, widget.req, _selectedItems,
                               _notes.text, double.parse(_deposit.text),
-                              fees, _totlaprice);
+                              fees, _totlaprice,_selectBranch.toString(),_selectbank.toString());
                         }
                       },
                       style: ElevatedButton.styleFrom(

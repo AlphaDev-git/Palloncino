@@ -175,11 +175,6 @@ class _AuthSignInWidget extends State<AuthSignInWidget>{
                             _show=true;
                           });
                           SignInMethod(_email.text, _pass.text, context);
-                          Future.delayed(const Duration(seconds: 5)).then((value) {
-                            setState(() {
-                              _show=false;
-                            });
-                          });
 
                         },
                         style: ElevatedButton.styleFrom(
