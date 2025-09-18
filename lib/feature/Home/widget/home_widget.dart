@@ -231,8 +231,8 @@ class _HomeWidget extends State<HomeWidget>{
                   InkWell(
                     child: buildProjectCard(
                       context,
-                      title: 'Items',
-                      status: 'Show Items',
+                      title: 'Catalog',
+                      status: 'Show Catalog',
                       statusColor: const Color(0xFFCE232B),
                     ),
                     onTap: (){

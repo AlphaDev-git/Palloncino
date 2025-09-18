@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pallon_app/feature/items/view/add_item_view.dart';
-import 'package:pallon_app/feature/items/widget/catalog_stream_widget.dart';
-import 'package:pallon_app/feature/items/widget/custom_item_table.dart';
+import 'package:pallon_app/feature/items/widget/gradview_item_catalog.dart';
+import 'package:pallon_app/models/catalog_model.dart';
+import 'package:pallon_app/models/sub_cat_model.dart';
 
-class ItemWidget extends StatefulWidget{
+
+
+class CatalogItemWidget extends StatefulWidget{
+  Catalog cat;
+  SubCatModel sub;
+  CatalogItemWidget(this.cat,this.sub);
   @override
   State<StatefulWidget> createState() {
-    return _ItemWidget();
+    return _CatalogItemWidget();
   }
-
 }
 
 
-class _ItemWidget extends State<ItemWidget>{
+
+class _CatalogItemWidget extends State<CatalogItemWidget>{
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery
@@ -61,7 +65,7 @@ class _ItemWidget extends State<ItemWidget>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Catalog',
+                            widget.sub.sub,
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
                               color: Colors.black,
@@ -70,7 +74,7 @@ class _ItemWidget extends State<ItemWidget>{
                         ],
                       ),
                       IconButton(onPressed: (){
-                       Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
+                        //Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
                       }, icon: Icon(Icons.add,color: Colors.black,))
                     ],
                   ),
@@ -78,8 +82,8 @@ class _ItemWidget extends State<ItemWidget>{
               ),
             ),
             SizedBox(
-              height: screenHeight*0.6,
-                child: CatalogStreamWidget()
+                height: screenHeight*0.6,
+                child: GradviewItemCatalog(widget.cat, widget.sub),
             )
           ],
         ),
