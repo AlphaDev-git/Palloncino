@@ -5,6 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pallon_app/Core/Widgets/common_widgets.dart';
 import 'package:pallon_app/feature/Auth/function/Auth_Functions.dart';
+import '../../../Core/Utils/app.images.dart';
+import '../../../Core/Widgets/social_media_button.dart';
 import 'BottomWaveClipper.dart';
 import 'TopWaveClipper.dart';
 
@@ -246,7 +248,15 @@ class _AuthSignupWidget extends State<AuthSignupWidget>{
                       ),
                     ),
                     SizedBox(height: screenHeight * 0.04),
-                    // Create Account Button
+                    SocialMethodButton(
+                        socialName: "Google                 ",
+                        screenWidth: screenWidth,
+                        socialLogo: AppImages.googlePLogo,
+                        onTap: (){
+                          SignInWithGoogle(context);
+                        }
+                    ),
+                    SizedBox(height: screenHeight * 0.04),
                     SizedBox(
                       width: double.infinity,
                       height: screenHeight * 0.07,

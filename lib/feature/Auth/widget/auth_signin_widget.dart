@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pallon_app/feature/Auth/function/Auth_Functions.dart';
 import 'package:pallon_app/feature/Auth/view/auth_signup_view.dart';
 import 'package:pallon_app/feature/Auth/view/forget_password_view.dart';
+import '../../../Core/Utils/app.images.dart';
 import '../../../Core/Widgets/common_widgets.dart';
+import '../../../Core/Widgets/social_media_button.dart';
 import 'BottomWaveClipper.dart';
 import 'TopWaveClipper.dart';
 
@@ -169,18 +172,27 @@ class _AuthSignInWidget extends State<AuthSignInWidget>{
                       ],
                     ),
                     SizedBox(height: screenHeight * 0.04),
-                    // Login Button
+                    SocialMethodButton(
+                        socialName: "Google                 ",
+                        screenWidth: screenWidth,
+                        socialLogo: AppImages.googlePLogo,
+                        onTap: (){
+                          SignInWithGoogle(context);
+                        }
+                        ),
+                    SizedBox(height: screenHeight * 0.04),
                     SizedBox(
                       width: double.infinity,
                       height: screenHeight * 0.07,
                       child: ElevatedButton(
-                        onPressed: () {
-                          if(_email!=""){
-                            if(_pass!=""){
+                        onPressed: () async{
+                          if(_email.text!=""){
+                            if(_pass.text!=""){
                               setState(() {
                                 _show=true;
                               });
                               SignInMethod(_email.text, _pass.text, context);
+                              // SignInWithGoogle(context);
                               setState(() {
                                 _show=false;
                               });

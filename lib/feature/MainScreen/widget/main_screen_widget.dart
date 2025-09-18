@@ -27,9 +27,9 @@ class _MainScreenWidget extends State<MainScreenWidget>{
     getPermesion();
   }
   void GetUserType()async{
-    userModel =await GetUserData(_auth.currentUser!.uid);
+    UserModel user =await GetUserData(_auth.currentUser!.uid);
     setState(() {
-      userModel;
+      userModel=user;
     });
   }
   @override

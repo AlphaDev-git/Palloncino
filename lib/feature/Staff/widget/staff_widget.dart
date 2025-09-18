@@ -32,9 +32,9 @@ class _StaffWidget extends State<StaffWidget>{
     GetUserType();
   }
   void GetUserType()async{
-    userModel =await GetUserData(_auth.currentUser!.uid);
+    UserModel user =await GetUserData(_auth.currentUser!.uid);
     setState(() {
-      userModel;
+      userModel=user;
     });
   }
   @override
