@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pallon_app/feature/items/widget/gradview_item_catalog.dart';
+import 'package:get/get.dart';
+import 'package:pallon_app/feature/Catalog/view/create_catalog_item_view.dart';
+import 'package:pallon_app/feature/Catalog/widget/gradview_item_catalog.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
 
@@ -68,14 +70,11 @@ class _CatalogItemWidget extends State<CatalogItemWidget>{
                             widget.sub.sub,
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ],
                       ),
-                      IconButton(onPressed: (){
-                        //Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
-                      }, icon: Icon(Icons.add,color: Colors.black,))
                     ],
                   ),
                 ],
@@ -87,6 +86,13 @@ class _CatalogItemWidget extends State<CatalogItemWidget>{
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed:(){
+          Get.bottomSheet(CreateCatalogItemView(widget.cat,widget.sub));
+        },
+        child: Icon(Icons.add,color: Colors.black,),
+        backgroundColor: Colors.white,
       ),
     );
   }

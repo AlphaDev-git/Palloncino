@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pallon_app/feature/items/widget/custom_table_sub_catalog.dart';
-import 'package:pallon_app/models/catalog_model.dart';
+import 'package:pallon_app/feature/Catalog/view/create_catalog_view.dart';
+import 'catalog_stream_widget.dart';
 
 
-
-class SubCatalogWidgte extends StatefulWidget{
-  Catalog cat;
-  SubCatalogWidgte(this.cat);
+class CatalogWidget extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _SubCatalogWidget();
+    return _CatalogWidget();
   }
 }
 
 
-
-class _SubCatalogWidget extends State<SubCatalogWidgte>{
+class _CatalogWidget extends State<CatalogWidget>{
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery
@@ -35,7 +30,7 @@ class _SubCatalogWidget extends State<SubCatalogWidgte>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: screenHeight * 0.25,
+              height: screenHeight * 0.22,
               width: double.infinity,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -65,17 +60,14 @@ class _SubCatalogWidget extends State<SubCatalogWidgte>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${widget.cat.cat}",
+                            'Catalog',
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ],
                       ),
-                      IconButton(onPressed: (){
-                       // Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
-                      }, icon: Icon(Icons.add,color: Colors.black,))
                     ],
                   ),
                 ],
@@ -83,12 +75,16 @@ class _SubCatalogWidget extends State<SubCatalogWidgte>{
             ),
             SizedBox(
                 height: screenHeight*0.6,
-                child: SubCatalogStreamWidget(widget.cat)
+                child: CatalogStreamWidget()
             )
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Get.bottomSheet(CreateCatalogView());
+      },child: Icon(Icons.add,color: Colors.black,),
+        backgroundColor: Colors.grey[100],),
     );
-  }
 
+  }
 }

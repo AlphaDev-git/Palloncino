@@ -29,7 +29,6 @@ class CustomItemCard extends StatelessWidget{
     final double verticalSpacing = screenWidth * 0.008;
     final double titleFontSize = screenWidth * 0.038;
     return Container(
-
       width: cardWidth,
       decoration: BoxDecoration(
         color: Colors.white,

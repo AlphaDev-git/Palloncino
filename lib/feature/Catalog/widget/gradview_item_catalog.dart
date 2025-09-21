@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pallon_app/Core/Widgets/custom_item_card.dart';
+import 'package:pallon_app/feature/Catalog/view/item_details_catalog_view.dart';
 import 'package:pallon_app/models/catalog_item_model.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
@@ -13,7 +15,6 @@ class GradviewItemCatalog extends StatefulWidget{
   GradviewItemCatalog(this.cat,this.sub);
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _GradviewItemCatalog();
   }
 }
@@ -67,7 +68,13 @@ class _GradviewItemCatalog extends State<GradviewItemCatalog>{
               childAspectRatio: 0.7,
             ),
               itemBuilder: (context, index){
-              return CustomItemCard(widget.sub.items[index]);
+              return InkWell(
+                  child: CustomItemCard(widget.sub.items[index]),
+                onTap: (){
+                    Get.to(ItemDetailsCatalogView(widget.sub.items[index]),duration: Duration(seconds: 1),
+                    transition: Transition.fadeIn);
+                },
+              );
               }
           ),
         );

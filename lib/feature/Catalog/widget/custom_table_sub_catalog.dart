@@ -2,8 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/feature/Catalog/Funcation/catalog_function.dart';
+import 'package:pallon_app/feature/Catalog/widget/edit_sub_category_catalog_widget.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
+import '../../../Core/Widgets/common_widgets.dart';
 import 'catalog_item_widget.dart';
 
 
@@ -46,7 +49,7 @@ class _SubCatalogStreamWidget extends State<SubCatalogStreamWidget>{
         }
         widget.catalog.sub=subcatalogs;
         return ListView.builder(
-            itemCount: widget.catalog.sub.length,
+            itemCount: subcatalogs.length,
             itemBuilder: (context,index){
               return Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -55,11 +58,25 @@ class _SubCatalogStreamWidget extends State<SubCatalogStreamWidget>{
                   elevation: 2,
                   child: ListTile(
                     onTap: (){
-                      Get.to(CatalogItemWidget(widget.catalog,widget.catalog.sub[index]),transition: Transition.fadeIn,duration: Duration(seconds: 1));
+                      Get.to(CatalogItemWidget(widget.catalog,subcatalogs[index]),transition: Transition.fadeIn,duration: Duration(seconds: 1));
                     },
                     enableFeedback: true,
-                    title: Text(widget.catalog.sub[index].sub),
-                    trailing:Icon(Icons.arrow_forward_outlined),
+                    title: Text(subcatalogs[index].sub),
+                    trailing:Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: (){
+                              Get.bottomSheet(
+                                  EditSubCategoryCatalog(widget.catalog,subcatalogs[index]),
+                                  clipBehavior: Clip.hardEdge,
+                              );
+                            }, icon: Icon(Icons.edit_outlined,color: Colors.green,)),
+                        IconButton(onPressed: ()async{
+                          DeleteSubCategory(context, widget.catalog, subcatalogs[index]);
+                        }, icon: Icon(Icons.delete_sweep_outlined,color: Colors.red,))
+                      ],
+                    ),
                     leading: CircleAvatar(
                       backgroundImage: CachedNetworkImageProvider(widget.catalog.sub[index].pic),
                     ),

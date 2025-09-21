@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pallon_app/feature/items/widget/sub_catalog_widget.dart';
+import 'package:pallon_app/feature/Catalog/widget/edit_cateory_widget.dart';
+import 'package:pallon_app/feature/Catalog/widget/sub_catalog_widget.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 
 
@@ -16,9 +17,16 @@ class CatalogStreamWidget extends StatefulWidget{
 
 class _ClassStreamWidget extends State<CatalogStreamWidget>{
   FirebaseFirestore _firestore=FirebaseFirestore.instance;
-
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore.collection('Catalog').snapshots(),
       builder: (context,snapshot){
@@ -55,7 +63,24 @@ class _ClassStreamWidget extends State<CatalogStreamWidget>{
                     },
                     enableFeedback: true,
                     title: Text(catalogs[index].cat),
-                    trailing:Icon(Icons.arrow_forward_outlined),
+                    trailing:Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                            onPressed: (){
+                              Get.bottomSheet(
+                                EditCategoryWidget(catalogs[index]),
+                                clipBehavior: Clip.hardEdge,
+                                enableDrag: true,
+                                persistent: true,
+                                ignoreSafeArea: true
+                              );
+                            }, icon: Icon(Icons.edit_outlined,color: Colors.green,)),
+                        IconButton(onPressed: ()async{
+                          await _firestore.collection('Catalog').doc(catalogs[index].doc).delete();
+                        }, icon: Icon(Icons.delete_sweep_outlined,color: Colors.red,))
+                      ],
+                    ),
                     leading: CircleAvatar(
                       backgroundImage: CachedNetworkImageProvider(catalogs[index].pic),
                     ),

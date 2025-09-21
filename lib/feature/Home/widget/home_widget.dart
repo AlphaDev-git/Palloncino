@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/feature/AddStaff/view/add_staff_view.dart';
+import 'package:pallon_app/feature/Catalog/view/catalog_view.dart';
 import 'package:pallon_app/feature/Requset/view/req_list_view.dart';
 import 'package:pallon_app/feature/items/view/add_item_view.dart';
 import 'package:pallon_app/feature/items/view/item_view.dart';
@@ -236,7 +237,7 @@ class _HomeWidget extends State<HomeWidget>{
                       statusColor: const Color(0xFFCE232B),
                     ),
                     onTap: (){
-                      Get.to(ItemView(),transition: Transition.topLevel,duration: Duration(seconds: 1));
+                      Get.to(CatalogView(),transition: Transition.topLevel,duration: Duration(seconds: 1));
                     },
                   ),
                   buildProjectCard(

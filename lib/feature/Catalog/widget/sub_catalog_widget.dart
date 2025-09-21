@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pallon_app/feature/items/view/add_item_view.dart';
-import 'package:pallon_app/feature/items/widget/custom_item_table.dart';
+import 'package:pallon_app/feature/Catalog/view/create_sub_catalog_view.dart';
+import 'package:pallon_app/feature/Catalog/widget/custom_table_sub_catalog.dart';
+import 'package:pallon_app/models/catalog_model.dart';
+import '../view/create_catalog_view.dart';
 
-class ItemWidget extends StatefulWidget{
+
+
+class SubCatalogWidgte extends StatefulWidget{
+  Catalog cat;
+  SubCatalogWidgte(this.cat);
   @override
   State<StatefulWidget> createState() {
-    return _ItemWidget();
+    return _SubCatalogWidget();
   }
-
 }
 
 
-class _ItemWidget extends State<ItemWidget>{
+
+class _SubCatalogWidget extends State<SubCatalogWidgte>{
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery
@@ -60,26 +66,32 @@ class _ItemWidget extends State<ItemWidget>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Items',
+                            "${widget.cat.cat}",
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ],
                       ),
-                      IconButton(onPressed: (){
-                       Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
-                      }, icon: Icon(Icons.add,color: Colors.black,))
                     ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: screenHeight * 0.045),
-            CustomeItemTable(context)
+            SizedBox(
+                height: screenHeight*0.6,
+                child: SubCatalogStreamWidget(widget.cat)
+            )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: (){
+          Get.bottomSheet(CreateSubCatalogView(widget.cat));
+        },
+        child: Icon(Icons.add,color: Colors.black,),
       ),
     );
   }
