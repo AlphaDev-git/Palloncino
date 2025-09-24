@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pallon_app/feature/Banners/view/add_banner_view.dart';
 import 'package:pallon_app/feature/Banners/widget/graidview_banners.dart';
 
 class BannerWidget extends StatefulWidget{
@@ -68,7 +70,9 @@ class _BannerWidget extends State<BannerWidget>{
           ),
         ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          Get.bottomSheet(AddBannerView());
+        },
         child: Icon(Icons.add,color: Colors.black,),
         backgroundColor: Colors.white,
       ),
