@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:pallon_app/feature/Client/widget/stream_banners.dart';
 
 import '../../../Core/Widgets/common_widgets.dart';
 import '../../../models/user_model.dart';
@@ -101,6 +102,10 @@ class _ClientHomeWidget extends State<ClientHomeWidget>{
               ),
             ),
             SizedBox(height: screenHeight*0.002,),
+            SizedBox(
+              height: screenHeight*0.13,
+              child: StreamBanner(context),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 0.08,
