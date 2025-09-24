@@ -27,6 +27,7 @@ Widget buildProjectCard(BuildContext context,
       ),
       padding: EdgeInsets.all(screenWidth * 0.05),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -93,5 +94,44 @@ void ErrorCustom(BuildContext context,String text){
       content: Text(text),
       backgroundColor: Colors.red,
     ),
+  );
+}
+
+void showErrorDialog(BuildContext context , String Error){
+  showDialog(
+    context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Error',
+            style: TextStyle(
+              color: Color(0xFFCE232B), // Red accent color
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            Error,
+            style: const TextStyle(color: Colors.black87),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFF07933E), // Green accent color
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          ],
+        );
+      }
   );
 }

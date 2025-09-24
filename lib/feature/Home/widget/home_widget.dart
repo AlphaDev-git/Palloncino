@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/feature/AddStaff/view/add_staff_view.dart';
+import 'package:pallon_app/feature/Banners/view/banner_view.dart';
 import 'package:pallon_app/feature/Catalog/view/catalog_view.dart';
 import 'package:pallon_app/feature/Requset/view/req_list_view.dart';
 import 'package:pallon_app/feature/items/view/add_item_view.dart';
@@ -245,6 +246,28 @@ class _HomeWidget extends State<HomeWidget>{
                     title: 'Order',
                     status: 'On-hold',
                     statusColor: const Color(0xFFCE232B),
+                  ),
+                  InkWell(
+                    child: buildProjectCard(
+                      context,
+                      title: 'Banners',
+                      status: 'Show Banners',
+                      statusColor: const Color(0xFF07933E),
+                    ),
+                    onTap: (){
+                      Get.to(BannerView(),transition: Transition.topLevel,duration: Duration(seconds: 1));
+                    },
+                  ),
+                  InkWell(
+                    child: buildProjectCard(
+                      context,
+                      title: 'Reports',
+                      status: 'Show Reports',
+                      statusColor: const Color(0xFF07933E),
+                    ),
+                    onTap: (){
+                      //Get.to(CatalogView(),transition: Transition.topLevel,duration: Duration(seconds: 1));
+                    },
                   ),
                 ],
               ),

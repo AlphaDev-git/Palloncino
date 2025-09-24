@@ -111,7 +111,12 @@ class _EditCategoryWidget extends State<EditCategoryWidget>{
                   height: screenHeight * 0.07,
                   child: ElevatedButton(
                     onPressed: (){
-                      EditCategoty(widget.cat, _image!, _name, context);
+                      if(_image!=null){
+                        EditCategoty(widget.cat, _image!, _name, context);
+                      }
+                      else{
+                        EditCategoty2(widget.cat, _name, context);
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFCE232B),

@@ -192,17 +192,16 @@ class _AuthSignInWidget extends State<AuthSignInWidget>{
                                 _show=true;
                               });
                               SignInMethod(_email.text, _pass.text, context);
-                              // SignInWithGoogle(context);
                               setState(() {
                                 _show=false;
                               });
                             }
                             else{
-                              ErrorCustom(context, "Please Enter Your Name");
+                              ErrorCustom(context, "Please Enter Your Password");
                             }
                           }
                           else{
-                            ErrorCustom(context, "Please Enter Your Name");
+                            ErrorCustom(context, "Please Enter Your Email");
                           }
                         },
                         style: ElevatedButton.styleFrom(

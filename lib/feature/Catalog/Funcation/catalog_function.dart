@@ -27,19 +27,31 @@ void createCategory(TextEditingController name,File image,BuildContext context)a
         });
       }
       else{
-        ErrorCustom(context, "Please Add Name");
+        showErrorDialog(context, "Please Add Name");
       }
     }
     else{
-      ErrorCustom(context, "Please Select Image");
+      showErrorDialog(context, "Please Select Image");
     }
   }
   catch(e){
-    Get.back();
-    ErrorCustom(context, e.toString());
+    showErrorDialog(context, e.toString());
   }
 }
 
+
+void EditCategoty2(Catalog cat,TextEditingController name,BuildContext context)async{
+  try{
+    await _firestore.collection('Catalog').doc(cat.doc).update({
+      'cat':name.text.toString(),
+    }).whenComplete((){
+      Get.back();
+    });
+  }
+  catch(e){
+    showErrorDialog(context, e.toString());
+  }
+}
 
 void EditCategoty(Catalog cat,File image,TextEditingController name,BuildContext context)async{
   try{
@@ -65,8 +77,7 @@ void EditCategoty(Catalog cat,File image,TextEditingController name,BuildContext
     }
   }
   catch(e){
-    Get.back();
-    ErrorCustom(context, e.toString());
+    showErrorDialog(context, e.toString());
   }
 }
 
@@ -94,8 +105,7 @@ void EditSubCategoryCatalogWidget(BuildContext context,File image,TextEditingCon
     }
   }
   catch(e){
-    Get.back();
-    ErrorCustom(context, e.toString());
+    showErrorDialog(context, e.toString());
   }
 }
 
@@ -106,7 +116,7 @@ void DeleteSubCategory(BuildContext context,Catalog cat,SubCatModel sub)async{
 
   }
   catch(e){
-    ErrorCustom(context, e.toString());
+    showErrorDialog(context, e.toString());
   }
 }
 
@@ -128,16 +138,15 @@ void createSubCategory(TextEditingController name,File image,BuildContext contex
         });
       }
       else{
-        ErrorCustom(context, "Please Add Name");
+        showErrorDialog(context, "Please Add Name");
       }
     }
     else{
-      ErrorCustom(context, "Please Select Image");
+      showErrorDialog(context, "Please Select Image");
     }
   }
   catch(e){
-    Get.back();
-    ErrorCustom(context, e.toString());
+    showErrorDialog(context, e.toString());
   }
 }
 
@@ -164,8 +173,57 @@ void CreateCatalogItems(BuildContext context,
     });
   }
   catch(e){
-    print(e);
-   Get.back();
+    showErrorDialog(context, e.toString());
+  }
+}
+
+
+void EditItemCataglog(BuildContext context,TextEditingController name,TextEditingController des,
+    TextEditingController price,String doc,Catalog cat,SubCatModel sub)async{
+  try{
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('item').doc(doc).update({
+      'name':name.text.toString(),
+      'price':price.text.toString(),
+      'des':des.text.toString(),
+    }).whenComplete((){
+      Get.back();
+    });
+  }
+  catch(e){
+    ErrorCustom(context, e.toString());
+  }
+}
+void EditItemCataglog2(BuildContext context,TextEditingController name,TextEditingController des,
+    TextEditingController price,String doc,Catalog cat,SubCatModel sub,File image)async{
+  try{
+    final path = "item/photos/item-${DateTime.now().toString()}.jpg";
+    final ref = FirebaseStorage.instance.ref().child(path);
+    final uploadTask = ref.putFile(image!);
+    final snapshot = await uploadTask.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('item').doc(doc).update({
+      'name':name.text.toString(),
+      'price':price.text.toString(),
+      'des':des.text.toString(),
+      'path':urlDownload
+    }).whenComplete((){
+      Get.back();
+
+    });
+  }
+  catch(e){
+    ErrorCustom(context, e.toString());
+  }
+}
+
+void DeleteItemCatalog(BuildContext context,String doc,Catalog cat,SubCatModel sub)async{
+  try{
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc)
+        .collection('item').doc(doc).delete().whenComplete((){
+          Get.back();
+    });
+  }
+  catch(e){
     ErrorCustom(context, e.toString());
   }
 }

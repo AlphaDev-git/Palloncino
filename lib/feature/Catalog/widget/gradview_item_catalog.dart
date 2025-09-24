@@ -71,7 +71,7 @@ class _GradviewItemCatalog extends State<GradviewItemCatalog>{
               return InkWell(
                   child: CustomItemCard(widget.sub.items[index]),
                 onTap: (){
-                    Get.to(ItemDetailsCatalogView(widget.sub.items[index]),duration: Duration(seconds: 1),
+                    Get.to(ItemDetailsCatalogView(widget.cat,widget.sub,widget.sub.items[index]),duration: Duration(seconds: 1),
                     transition: Transition.fadeIn);
                 },
               );
