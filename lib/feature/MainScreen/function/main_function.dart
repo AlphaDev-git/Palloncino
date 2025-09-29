@@ -1,12 +1,19 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pallon_app/main.dart';
 import 'package:pallon_app/models/user_model.dart';
 
 FirebaseMessaging fcm = FirebaseMessaging.instance;
+void setLastSeen(String doc)async{
+  FirebaseFirestore firestore=FirebaseFirestore.instance;
+  await firestore.collection('user').doc(doc).collection('seen').doc().set({
+    'time':DateTime.now().toString(),
+  });
+}
 Future<UserModel> GetUserData(String doc)async{
   FirebaseFirestore firestore=FirebaseFirestore.instance;
   UserModel userModel=UserModel(doc: doc, email: "email", phone: "phone", name: "name", pic: "pic", type: "type");
@@ -21,6 +28,13 @@ Future<UserModel> GetUserData(String doc)async{
 }
 
 void getPermesion()async{
+  FirebaseFirestore firestore=FirebaseFirestore.instance;
+  FirebaseAuth auth=FirebaseAuth.instance;
+  String? token=await fcm.getToken();
+  await firestore.collection('user').doc(auth.currentUser!.uid).update({
+    'token':token
+  });
+
   NotificationSettings settings =  await fcm.requestPermission(
     alert: true,
     announcement: false,
