@@ -5,6 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/feature/splash/views/splash_view.dart';
+
+import '../../../Core/Widgets/common_widgets.dart';
 FirebaseAuth auth=FirebaseAuth.instance;
 FirebaseFirestore firestore=FirebaseFirestore.instance;
 FirebaseStorage storage = FirebaseStorage.instance;
@@ -60,5 +62,16 @@ void RemoveAccount(BuildContext context)async{
         backgroundColor: Color(0xFF07933E),
       ),
     );
+  }
+}
+
+void UpdatePasswordProfile(TextEditingController pass,BuildContext context)async{
+  try{
+    await auth.currentUser!.updatePassword(pass.text).whenComplete((){
+      Get.back();
+    });
+  }
+  catch(e){
+    showErrorDialog(context, e.toString());
   }
 }

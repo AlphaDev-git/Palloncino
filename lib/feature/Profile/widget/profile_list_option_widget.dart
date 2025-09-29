@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/feature/AddStaff/view/add_staff_view.dart';
 import 'package:pallon_app/feature/Profile/function/profile_function.dart';
+import 'package:pallon_app/feature/Profile/widget/update_password_widget.dart';
 import 'package:pallon_app/feature/items/view/item_view.dart';
 import 'package:pallon_app/models/user_model.dart';
 
@@ -17,6 +18,9 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Update Profile', Icons.person_outline,
             () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
+            duration: Duration(seconds: 1))),
+    buildOptionTile(context, 'Update Password', Icons.password,
+            () =>Get.to(UpdatePassword(),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Add New Staff', Icons.person_add_alt,
@@ -51,6 +55,10 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
             () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
+    buildOptionTile(context, 'Update Password', Icons.password,
+            () =>Get.to(UpdatePassword(),transition: Transition.topLevel,
+            duration: Duration(seconds: 1))),
+    SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Language', Icons.language,
             () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
@@ -70,6 +78,10 @@ List<Widget> CustomListOptions(BuildContext context,UserModel user){
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Update Profile', Icons.person_outline,
             () =>Get.to(UpdateProfileWidget(user),transition: Transition.topLevel,
+            duration: Duration(seconds: 1))),
+    SizedBox(height: screenHeight * 0.01),
+    buildOptionTile(context, 'Update Password', Icons.password,
+            () =>Get.to(UpdatePassword(),transition: Transition.topLevel,
             duration: Duration(seconds: 1))),
     SizedBox(height: screenHeight * 0.01),
     buildOptionTile(context, 'Language', Icons.language,
