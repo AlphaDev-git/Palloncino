@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:pallon_app/feature/Catalog/view/create_sub_catalog_view.dart';
 import 'package:pallon_app/feature/Catalog/widget/custom_table_sub_catalog.dart';
 import 'package:pallon_app/models/catalog_model.dart';
-import '../view/create_catalog_view.dart';
 
 
 
@@ -80,7 +79,7 @@ class _SubCatalogWidget extends State<SubCatalogWidgte>{
               ),
             ),
             SizedBox(
-                height: screenHeight*0.6,
+                height: screenHeight*0.9,
                 child: SubCatalogStreamWidget(widget.cat)
             )
           ],

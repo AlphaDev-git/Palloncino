@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/models/catalog_item_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
 import '../../../Core/Widgets/common_widgets.dart';
 import '../../../models/catalog_model.dart';
@@ -226,4 +227,59 @@ void DeleteItemCatalog(BuildContext context,String doc,Catalog cat,SubCatModel s
   catch(e){
     ErrorCustom(context, e.toString());
   }
+}
+
+Future<List<CatalogItemModel>> GetAllItems(BuildContext context)async{
+  List<Catalog> cat=[];
+  List<SubCatModel> sub=[];
+  List<CatalogItemModel> items=[];
+  try{
+    await _firestore.collection('Catalog').get().then((value)async{
+      for(int i=0;i<value.size;i++){
+        cat.add(
+            Catalog(doc: value.docs[i].id, cat: value.docs[i].get('cat'), pic: value.docs[i].get('pic'))
+        );
+        sub=[];
+        await _firestore.collection('Catalog').doc(cat[i].doc).collection('sub').get().then((value){
+          for(int j=0;j<value.size;j++){
+            sub.add(
+                SubCatModel(doc: value.docs[j].id, sub: value.docs[j].get('sub'), pic: value.docs[j].get('pic'))
+            );
+          }
+        }).whenComplete(()async{
+          cat[i].sub=sub;
+          for(int k=0;k<cat[i].sub.length;k++){
+            await _firestore.collection('Catalog').doc(cat[i].doc).collection('sub').doc(cat[i].sub[k].doc).collection('item').get().then((value){
+              for(int m=0;m<value.size;m++){
+                cat[i].sub[k].items.add(
+                    CatalogItemModel(doc: value.docs[m].id, name: value.docs[m].get('name'),
+                        path: value.docs[m].get('path'), des: value.docs[m].get('des'), price: value.docs[m].get('price'))
+                );
+                items.add(CatalogItemModel(doc: value.docs[m].id, name: value.docs[m].get('name'),
+                    path: value.docs[m].get('path'), des: value.docs[m].get('des'), price: value.docs[m].get('price'))
+                );
+              }
+            });
+          }
+        });
+      }
+    });
+    return items;
+  }
+  catch(e){
+    ErrorCustom(context, e.toString());
+    return items;
+  }
+}
+
+
+List<CatalogItemModel> SearchItem(List<CatalogItemModel> allitems,String text){
+  List<CatalogItemModel> items=[];
+  for(int i=0;i<allitems.length;i++){
+    print(allitems[i].name);
+    if(allitems[i].name.contains(text)){
+      items.add(allitems[i]);
+    }
+  }
+  return items;
 }

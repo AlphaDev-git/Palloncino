@@ -63,7 +63,7 @@ class _BannerWidget extends State<BannerWidget>{
                 ),
               ),
               SizedBox(
-                height: screenHeight*0.20,
+                height: screenHeight*0.9,
                 child: GradViewBanners(context),
               ),
             ],

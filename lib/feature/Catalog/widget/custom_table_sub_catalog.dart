@@ -6,7 +6,6 @@ import 'package:pallon_app/feature/Catalog/Funcation/catalog_function.dart';
 import 'package:pallon_app/feature/Catalog/widget/edit_sub_category_catalog_widget.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
-import '../../../Core/Widgets/common_widgets.dart';
 import 'catalog_item_widget.dart';
 
 

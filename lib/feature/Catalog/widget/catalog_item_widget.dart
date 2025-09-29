@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/feature/Catalog/view/create_catalog_item_view.dart';
 import 'package:pallon_app/feature/Catalog/widget/gradview_item_catalog.dart';
+import 'package:pallon_app/models/catalog_item_model.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
+
+import '../Funcation/catalog_function.dart';
 
 
 
@@ -20,6 +23,8 @@ class CatalogItemWidget extends StatefulWidget{
 
 
 class _CatalogItemWidget extends State<CatalogItemWidget>{
+
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery
@@ -34,6 +39,7 @@ class _CatalogItemWidget extends State<CatalogItemWidget>{
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
@@ -81,9 +87,10 @@ class _CatalogItemWidget extends State<CatalogItemWidget>{
               ),
             ),
             SizedBox(
-                height: screenHeight*0.6,
+                height: screenHeight*0.7,
                 child: GradviewItemCatalog(widget.cat, widget.sub),
-            )
+            ),
+
           ],
         ),
       ),
