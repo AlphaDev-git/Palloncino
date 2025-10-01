@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,6 +43,7 @@ Widget CustomeItemTable(BuildContext context){
           DataRow row = DataRow(
             cells: [
               DataCell(Text(data['id'].toString() ?? '')),
+              DataCell(CircleAvatar(backgroundImage: CachedNetworkImageProvider(data['pic']),)),
               DataCell(Text(data['Item'] ?? '')),
               DataCell(Text(data['count']?.toString() ?? '')),
               DataCell(Text(data['price']?.toString() ?? '')),
@@ -73,6 +75,20 @@ Widget CustomeItemTable(BuildContext context){
                   child: Center(
                     child: Text(
                       'ID',
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              DataColumn(
+                label: SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      'Pic',
                       style: TextStyle(
                         fontSize: screenWidth * 0.035,
                         fontWeight: FontWeight.bold,

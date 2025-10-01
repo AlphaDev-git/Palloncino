@@ -63,14 +63,11 @@ class _ItemWidget extends State<ItemWidget>{
                             'Items',
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ],
                       ),
-                      IconButton(onPressed: (){
-                       Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
-                      }, icon: Icon(Icons.add,color: Colors.black,))
                     ],
                   ),
                 ],
@@ -80,6 +77,13 @@ class _ItemWidget extends State<ItemWidget>{
             CustomeItemTable(context)
           ],
         ),
+      ),
+      floatingActionButton:  FloatingActionButton(
+        onPressed: (){
+          Get.to(AddItemView(),duration: Duration(seconds: 1),transition: Transition.zoom);
+        },
+        child: Icon(Icons.add,color: Colors.black,),
+        backgroundColor: Colors.white,
       ),
     );
   }
