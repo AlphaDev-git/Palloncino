@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/models/catalog_item_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
+import 'package:pallon_app/models/sub_sub_cat.dart';
 import '../../../Core/Widgets/common_widgets.dart';
 import '../../../models/catalog_model.dart';
 
@@ -153,8 +154,9 @@ void createSubCategory(TextEditingController name,File image,BuildContext contex
 
 
 void CreateCatalogItems(BuildContext context,
-    Catalog cat,SubCatModel sub,
-    TextEditingController name,TextEditingController des,TextEditingController price,File image)async{
+    Catalog cat,SubCatModel sub,SubSubCatModel subsub,
+    TextEditingController name,TextEditingController des,TextEditingController price,File image,
+    )async{
   try{
     final path = "item/photos/item-${DateTime.now().toString()}.jpg";
     final ref = FirebaseStorage.instance.ref().child(path);
@@ -163,7 +165,7 @@ void CreateCatalogItems(BuildContext context,
     final urlDownload = await snapshot.ref.getDownloadURL();
     String doc=DateTime.now().toString();
     await _firestore.collection('Catalog').doc(cat.doc).collection('sub')
-        .doc(sub.doc).collection("item").doc(doc).set({
+        .doc(sub.doc).collection('subsub').doc(subsub.doc).collection("item").doc(doc).set({
       'doc':doc,
       'path':urlDownload,
       'name':name.text,
@@ -180,9 +182,10 @@ void CreateCatalogItems(BuildContext context,
 
 
 void EditItemCataglog(BuildContext context,TextEditingController name,TextEditingController des,
-    TextEditingController price,String doc,Catalog cat,SubCatModel sub)async{
+    TextEditingController price,String doc,Catalog cat,SubCatModel sub,SubSubCatModel subsub)async{
   try{
-    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('item').doc(doc).update({
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc)
+        .collection('subsub').doc(subsub.doc).collection('item').doc(doc).update({
       'name':name.text.toString(),
       'price':price.text.toString(),
       'des':des.text.toString(),
@@ -195,14 +198,15 @@ void EditItemCataglog(BuildContext context,TextEditingController name,TextEditin
   }
 }
 void EditItemCataglog2(BuildContext context,TextEditingController name,TextEditingController des,
-    TextEditingController price,String doc,Catalog cat,SubCatModel sub,File image)async{
+    TextEditingController price,String doc,Catalog cat,SubCatModel sub,File image,SubSubCatModel subsub)async{
   try{
     final path = "item/photos/item-${DateTime.now().toString()}.jpg";
     final ref = FirebaseStorage.instance.ref().child(path);
     final uploadTask = ref.putFile(image!);
     final snapshot = await uploadTask.whenComplete(() {});
     final urlDownload = await snapshot.ref.getDownloadURL();
-    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('item').doc(doc).update({
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).
+    collection('subsub').doc(subsub.doc).collection('item').doc(doc).update({
       'name':name.text.toString(),
       'price':price.text.toString(),
       'des':des.text.toString(),
@@ -217,9 +221,9 @@ void EditItemCataglog2(BuildContext context,TextEditingController name,TextEditi
   }
 }
 
-void DeleteItemCatalog(BuildContext context,String doc,Catalog cat,SubCatModel sub)async{
+void DeleteItemCatalog(BuildContext context,String doc,Catalog cat,SubCatModel sub,SubSubCatModel subsub)async{
   try{
-    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc)
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('subsub').doc(subsub.doc)
         .collection('item').doc(doc).delete().whenComplete((){
           Get.back();
     });
@@ -282,4 +286,66 @@ List<CatalogItemModel> SearchItem(List<CatalogItemModel> allitems,String text){
     }
   }
   return items;
+}
+
+void CreateSubSubCatalog(BuildContext context,SubCatModel sub,Catalog catalog,File image,TextEditingController name)async{
+  try{
+    final path = "Catalog/sub/subsub-${DateTime.now().toString()}.jpg";
+    final ref = FirebaseStorage.instance.ref().child(path);
+    final uploadTask = ref.putFile(image!);
+    final snapshot = await uploadTask.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    String doc=DateTime.now().toString();
+    await _firestore.collection('Catalog').doc(catalog.doc).collection('sub').doc(sub.doc).collection('subsub').doc(doc).set({
+      'doc':doc,
+      'pic':urlDownload,
+      'subsub':name.text
+    }).whenComplete((){
+      Get.back();
+    });
+  }
+  catch(e){
+    showErrorDialog(context, e.toString());
+  }
+}
+
+
+void EditSubSubImage(BuildContext context,Catalog cat,SubCatModel sub,SubSubCatModel subsub,TextEditingController name,File image)async{
+  try{
+    final path = "Catalog/sub/subsub-${DateTime.now().toString()}.jpg";
+    final ref = FirebaseStorage.instance.ref().child(path);
+    final uploadTask = ref.putFile(image!);
+    final snapshot = await uploadTask.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('subsub').doc(subsub.doc).update({
+      'pic':urlDownload,
+      'subsub':name.text
+    }).whenComplete((){
+      Get.back();
+    });
+  }
+  catch(e){
+    showErrorDialog(context, e.toString());
+  }
+}
+void EditSubSub(BuildContext context,Catalog cat,SubCatModel sub,SubSubCatModel subsub,TextEditingController name,)async{
+  try{
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('subsub').doc(subsub.doc).update({
+      'subsub':name.text
+    }).whenComplete((){
+      Get.back();
+    });
+  }
+  catch(e){
+    showErrorDialog(context, e.toString());
+  }
+}
+
+void DeleteSubSub(BuildContext context,Catalog cat,SubCatModel sub,SubSubCatModel subsub)async{
+  try{
+    await _firestore.collection('Catalog').doc(cat.doc).collection('sub').doc(sub.doc).collection('subsub').doc(subsub.doc).delete();
+  }
+  catch(e){
+    showErrorDialog(context, e.toString());
+  }
 }

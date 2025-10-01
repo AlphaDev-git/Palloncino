@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pallon_app/feature/Catalog/Funcation/catalog_function.dart';
+import 'package:pallon_app/feature/Catalog/view/subsub_view.dart';
 import 'package:pallon_app/feature/Catalog/widget/edit_sub_category_catalog_widget.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
@@ -57,7 +58,10 @@ class _SubCatalogStreamWidget extends State<SubCatalogStreamWidget>{
                   elevation: 2,
                   child: ListTile(
                     onTap: (){
-                      Get.to(CatalogItemWidget(widget.catalog,subcatalogs[index]),transition: Transition.fadeIn,duration: Duration(seconds: 1));
+                      Get.to(
+                          SubSubView(widget.catalog, subcatalogs[index]),
+                         // CatalogItemWidget(widget.catalog,subcatalogs[index]),
+                          transition: Transition.fadeIn,duration: Duration(seconds: 1));
                     },
                     enableFeedback: true,
                     title: Text(subcatalogs[index].sub),

@@ -6,13 +6,15 @@ import 'package:pallon_app/feature/Catalog/view/item_details_catalog_view.dart';
 import 'package:pallon_app/models/catalog_item_model.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
+import 'package:pallon_app/models/sub_sub_cat.dart';
 
 
 
 class GradviewItemCatalog extends StatefulWidget{
   Catalog cat;
   SubCatModel sub;
-  GradviewItemCatalog(this.cat,this.sub);
+  SubSubCatModel subsub;
+  GradviewItemCatalog(this.cat,this.sub,this.subsub);
   @override
   State<StatefulWidget> createState() {
     return _GradviewItemCatalog();
@@ -33,7 +35,8 @@ class _GradviewItemCatalog extends State<GradviewItemCatalog>{
         .width;
     // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('Catalog').doc(widget.cat.doc).collection('sub').doc(widget.sub.doc).collection('item').snapshots(),
+      stream: _firestore.collection('Catalog').doc(widget.cat.doc).collection('sub').doc(widget.sub.doc).collection('subsub').doc(widget.subsub.doc)
+          .collection('item').snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -71,7 +74,7 @@ class _GradviewItemCatalog extends State<GradviewItemCatalog>{
               return InkWell(
                   child: CustomItemCard(widget.sub.items[index]),
                 onTap: (){
-                    Get.to(ItemDetailsCatalogView(widget.cat,widget.sub,widget.sub.items[index]),duration: Duration(seconds: 1),
+                    Get.to(ItemDetailsCatalogView(widget.cat,widget.sub,widget.subsub,widget.sub.items[index]),duration: Duration(seconds: 1),
                     transition: Transition.fadeIn);
                 },
               );

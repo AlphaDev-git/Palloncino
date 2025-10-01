@@ -6,12 +6,15 @@ import 'package:pallon_app/feature/Catalog/Funcation/catalog_function.dart';
 import 'package:pallon_app/models/catalog_model.dart';
 import 'package:pallon_app/models/sub_cat_model.dart';
 
+import '../../../models/sub_sub_cat.dart';
+
 
 
 class CreateCatalogItemWidget extends StatefulWidget{
   Catalog cat;
   SubCatModel sub;
-  CreateCatalogItemWidget(this.cat,this.sub);
+  SubSubCatModel subsub;
+  CreateCatalogItemWidget(this.cat,this.sub,this.subsub);
   @override
   State<StatefulWidget> createState() {
     return _CreateCatalogItemWidget();
@@ -181,7 +184,7 @@ class _CreateCatalogItemWidget extends State<CreateCatalogItemWidget>{
                         setState(() {
                           _show=true;
                         });
-                        CreateCatalogItems(context, widget.cat, widget.sub, _name, _des, _price, _image!);
+                        CreateCatalogItems(context, widget.cat, widget.sub,widget.subsub, _name, _des, _price, _image!);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFCE232B),

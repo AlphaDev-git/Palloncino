@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pallon_app/feature/Catalog/view/create_catalog_item_view.dart';
-import 'package:pallon_app/feature/Catalog/widget/gradview_item_catalog.dart';
-import 'package:pallon_app/models/catalog_model.dart';
-import 'package:pallon_app/models/sub_cat_model.dart';
-import 'package:pallon_app/models/sub_sub_cat.dart';
+import 'package:pallon_app/feature/Catalog/view/create_sub_sub_view.dart';
+import 'package:pallon_app/feature/Catalog/widget/sub_sub_stream_data.dart';
+import '../../../models/catalog_model.dart';
+import '../../../models/sub_cat_model.dart';
 
 
-
-class CatalogItemWidget extends StatefulWidget{
-  Catalog cat;
+class SubSubWidget extends StatefulWidget{
   SubCatModel sub;
-  SubSubCatModel subsub;
-  CatalogItemWidget(this.cat,this.sub,this.subsub);
+  Catalog catalog;
+  SubSubWidget(this.catalog,this.sub);
   @override
   State<StatefulWidget> createState() {
-    return _CatalogItemWidget();
+    return _SubSubWidget();
   }
 }
 
 
-
-class _CatalogItemWidget extends State<CatalogItemWidget>{
-
-
+class _SubSubWidget extends State<SubSubWidget>{
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery
@@ -72,7 +66,7 @@ class _CatalogItemWidget extends State<CatalogItemWidget>{
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.subsub.subsub,
+                            widget.sub.sub,
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
                               color: Colors.white,
@@ -86,21 +80,16 @@ class _CatalogItemWidget extends State<CatalogItemWidget>{
               ),
             ),
             SizedBox(
-                height: screenHeight*0.7,
-                child: GradviewItemCatalog(widget.cat, widget.sub,widget.subsub),
+              height: screenHeight*0.7,
+              child: SubSubStreamData(context,widget.sub, widget.catalog),
             ),
-
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed:(){
-          Get.bottomSheet(CreateCatalogItemView(widget.cat,widget.sub,widget.subsub));
-        },
-        child: Icon(Icons.add,color: Colors.black,),
-        backgroundColor: Colors.white,
-      ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Get.bottomSheet(CreateSubSubView(widget.catalog,widget.sub));
+      },child: Icon(Icons.add,color: Colors.black,),
+        backgroundColor: Colors.grey[100],),
     );
   }
-
 }

@@ -4,7 +4,6 @@ import 'package:pallon_app/feature/Catalog/view/create_catalog_view.dart';
 import '../../../Core/Widgets/custom_item_card.dart';
 import '../../../models/catalog_item_model.dart';
 import '../Funcation/catalog_function.dart';
-import '../view/item_details_catalog_view.dart';
 import 'catalog_stream_widget.dart';
 
 
@@ -73,7 +72,7 @@ class _CatalogWidget extends State<CatalogWidget>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: screenHeight * 0.04),
-                 _search? Row(
+                !_search? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
@@ -141,7 +140,7 @@ class _CatalogWidget extends State<CatalogWidget>{
                 ],
               ),
             ),
-            !_search?SizedBox(
+            _search?SizedBox(
               height: screenHeight*0.7,
               child: GradSearch(_searchItem),
             )

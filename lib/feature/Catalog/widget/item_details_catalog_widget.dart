@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:pallon_app/feature/Catalog/Funcation/catalog_function.dart';
 import 'package:pallon_app/models/catalog_item_model.dart';
-
+import 'package:pallon_app/models/sub_sub_cat.dart';
 import '../../../models/catalog_model.dart';
 import '../../../models/sub_cat_model.dart';
 
@@ -14,8 +13,9 @@ import '../../../models/sub_cat_model.dart';
 class ItemDetailsCatalogWidget extends StatefulWidget{
   Catalog cat;
   SubCatModel sub;
+  SubSubCatModel subsub;
   CatalogItemModel itemModel;
-  ItemDetailsCatalogWidget(this.cat,this.sub,this.itemModel);
+  ItemDetailsCatalogWidget(this.cat,this.sub,this.subsub,this.itemModel);
   @override
   State<StatefulWidget> createState() {
     return _ItemDetailsCatalogWidget();
@@ -209,11 +209,11 @@ class _ItemDetailsCatalogWidget extends State<ItemDetailsCatalogWidget>{
                             });
                             if(_image!=null){
                               EditItemCataglog2(context, _name, _des, _price,
-                                  widget.itemModel.doc, widget.cat, widget.sub,_image!);
+                                  widget.itemModel.doc, widget.cat, widget.sub,_image!,widget.subsub);
                             }
                             else{
                               EditItemCataglog(context, _name, _des, _price,
-                                  widget.itemModel.doc, widget.cat, widget.sub);
+                                  widget.itemModel.doc, widget.cat, widget.sub,widget.subsub);
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -245,7 +245,7 @@ class _ItemDetailsCatalogWidget extends State<ItemDetailsCatalogWidget>{
                               _show=true;
                             });
                             DeleteItemCatalog(context, widget.itemModel.doc,
-                                widget.cat, widget.sub);
+                                widget.cat, widget.sub,widget.subsub);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFCE232B),
