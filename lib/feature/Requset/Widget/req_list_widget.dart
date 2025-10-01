@@ -63,7 +63,7 @@ class _ReqListWidget extends State<ReqListWidget>{
                             'All Request',
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                           SizedBox(height: screenHeight * 0.005),
@@ -77,7 +77,6 @@ class _ReqListWidget extends State<ReqListWidget>{
             SizedBox(height: 5,),
             SizedBox(
               height: screenHeight*1.96,
-
               child: CustomListReq(context),
             )
           ],

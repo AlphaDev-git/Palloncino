@@ -103,8 +103,6 @@ class _ReqDetailsWidget extends State<ReqDetailsWidget>{
     double imagePreviewMargin = screenWidth * 0.02;
     double imagePreviewBorderRadius = screenWidth * 0.02;
     double imagePickerHeight = screenHeight * 0.2;
-    double imagePickerBorderWidth = screenWidth * 0.005;
-    double imagePickerBorderRadius = screenWidth * 0.025;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: SingleChildScrollView(
@@ -145,7 +143,7 @@ class _ReqDetailsWidget extends State<ReqDetailsWidget>{
                             'Request Details',
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                           SizedBox(height: screenHeight * 0.005),

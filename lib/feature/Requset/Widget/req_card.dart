@@ -56,12 +56,39 @@ Widget buildReqCard(BuildContext context,ReqDataModel req){
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        req.status,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          color: Colors.grey[600],
-                        ),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Created By ${req.createby}",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          Text(
+                            "Branch ${req.branch}",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+
+                          Text(
+                            "Payment Type: ${req.typebank}",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          Text(
+                            req.status,
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
                       ),
                       Stack(
                         alignment: Alignment.center,

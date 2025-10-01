@@ -1,18 +1,25 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:pallon_app/Core/Widgets/image_view.dart';
 import 'package:pallon_app/feature/AddRequest/functions/req_function.dart';
-import 'package:pallon_app/models/item_model.dart';
+import 'package:pallon_app/models/catalog_item_model.dart';
 import 'package:pallon_app/models/req_model.dart';
+import '../../../models/catalog_model.dart';
+import '../../../models/sub_cat_model.dart';
+import '../../../models/sub_sub_cat.dart';
 import '../../../models/user_model.dart';
 import '../../MainScreen/function/main_function.dart';
 
 
 class CompeleteReqWidget extends StatefulWidget{
   ReqModel req;
-  CompeleteReqWidget(this.req);
+  List<Catalog> cat;
+  CompeleteReqWidget(this.req,this.cat);
   @override
   State<StatefulWidget> createState() {
     return _CompeleteReqWidget();
@@ -28,80 +35,73 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
   bool _AddDesgin=false;
   final List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
-  List<ItemModel>_allItems=[];
-  List<ItemModel> _selectedItems = [];
+  List<Catalog> _fullCatalog = [];
+  Catalog? _selectedCatalog;
+  SubCatModel? _selectedSubCat;
+  SubSubCatModel? _selectedSubSubCat;
+  CatalogItemModel? _selectedItem;
+  List<CatalogItemModel> _selectedItems = [];
   String? _selectbank;
   String? _selectBranch;
   List<String> bank=[
-    "نقدي",
-    "اجل",
-    "تحويل بنكي",
-    "الاهلي الروضة",
-    "الاهلي البساتين",
-    "الانماء",
-    "شبكة",
-    "مدي",
-    "فيزا"
+    "نقدي", "اجل", "تحويل بنكي", "الاهلي الروضة", "الاهلي البساتين", "الانماء", "شبكة", "مدي", "فيزا"
   ];
   List<String> brach=[
-    "الروضة",
-    "البساتين",
-    "توصيل",
-    "توصيل و تركيب",
-    "شحن خارج جدة"
+    "الروضة", "البساتين", "توصيل", "توصيل و تركيب", "شحن خارج جدة"
   ];
-  ItemModel? _selectedItem;
+
   final TextEditingController _countController = TextEditingController();
   final TextEditingController _notes = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   TextEditingController _deposit=TextEditingController();
-  TextEditingController _branch=TextEditingController();
-  TextEditingController _bank=TextEditingController();
   bool _showModel=false;
+
   @override
   void initState() {
     super.initState();
     _deposit=TextEditingController(
-      text: "0.0"
+        text: "0.0"
     );
     GetUserType();
-    GetAllItems();
+    _fullCatalog=widget.cat;
   }
+  void GetAllCatalog()async{
+    List<Catalog> cats=[];
+    cats=await GetAllCatalogData();
+    setState(() {
+      _fullCatalog=cats;
+    });
+  }
+
   void GetUserType()async{
     userModel =await GetUserData(_auth.currentUser!.uid);
     setState(() {
       userModel;
     });
   }
-  void GetAllItems()async{
-    _allItems=await GetItemsList();
-    setState(() {
-      _allItems;
-    });
-  }
-  void _addItemToTable() {
-    if (_formKey.currentState!.validate() && _selectedItem != null) {
 
-      final count = int.tryParse(_countController.text);
-      double price=_selectedItem!.price*count!;
-      if (count != null && count > 0) {
-        setState(() {
-          _selectedItems.add(ItemModel(
-            id: _selectedItem!.id,
-            name: _selectedItem!.name,
-            count: count,
-            price: _selectedItem!.price,
-            show: _selectedItem!.show,
-            pic: _selectedItem!.pic,
-            doc: _selectedItem!.doc,
-          ));
-          _totlaprice+=price;
-        });
-        _countController.clear();
-        _selectedItem = null;
-      }
+  void _addItemToTable() {
+    if (_selectedItem != null) {
+      setState(() {
+        _selectedItems.add(
+            CatalogItemModel(
+                doc: _selectedItem!.doc,
+                name: _selectedItem!.name,
+                path:_selectedItem!. path,
+                des: _countController.text,
+                price: _selectedItem!.price
+            )
+        );
+        _totlaprice+=double.parse(_selectedItem!.price);
+      });
+      _countController.clear();
+      _selectedCatalog = null;
+      _selectedSubCat = null;
+      _selectedSubSubCat = null;
+      _selectedItem = null;
     }
   }
+
   Future<void> _pickImage() async {
     final List<XFile>? pickedFiles = await _picker.pickMultiImage();
     if (pickedFiles != null && pickedFiles.isNotEmpty) {
@@ -116,28 +116,15 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
       _images.removeAt(index);
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    List<DataRow> rows = [];
-    final screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    double appBarTitleFontSize = screenWidth * 0.045;
-    double appBarLeadingPadding = screenWidth * 0.02;
-    double appBarLeadingBorderRadius = screenWidth * 0.06;
-    double appBarLeadingIconSize = screenWidth * 0.06;
-    double titleSectionFontSize = screenWidth * 0.06;
-    double titleSectionSpacing = screenHeight * 0.025;
-    double formPadding = screenWidth * 0.04;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    double formFieldSpacing = screenHeight * 0.02;
     double imagePickerHeight = screenHeight * 0.2;
     double imagePickerBorderWidth = screenWidth * 0.005;
     double imagePickerBorderRadius = screenWidth * 0.025;
-    double uploadIconSize = screenWidth * 0.15;
     double uploadTextSpacing = screenHeight * 0.01;
     double uploadTextFontSize = screenWidth * 0.04;
     double imagePreviewWidth = screenWidth * 0.4;
@@ -145,33 +132,7 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
     double imagePreviewBorderRadius = screenWidth * 0.02;
     double removeImageButtonPadding = screenWidth * 0.01;
     double removeImageButtonIconSize = screenWidth * 0.04;
-    double formFieldSpacing = screenHeight * 0.02;
-    double dropdownItemFontSize = screenWidth * 0.038;
-    double submitButtonSpacing = screenHeight * 0.03;
-    double submitButtonVerticalPadding = screenHeight * 0.02;
-    double submitButtonBorderRadius = screenWidth * 0.025;
-    double submitButtonFontSize = screenWidth * 0.05;
-    for (var item in _selectedItems) {
-      rows.add(DataRow(
-        cells: [
-          DataCell(Text(item.name)),
-          DataCell(Text(item.count.toString())),
-          DataCell(
-            item.show?  Text(item.price.toString()):Text("No Price")
-          ),
-          DataCell(
-            IconButton(
-              icon: const Icon(Icons.delete_outlined, color: Color(0xFFCE232B)),
-              onPressed: () {
-                setState(() {
-                  _selectedItems.remove(item);
-                });
-              },
-            ),
-          ),
-        ],
-      ));
-    }
+
     return  Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -192,80 +153,76 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
                   key: _formKey,
                   child: Column(
                     children: [
-                      // Item Selection Dropdown
-                      DropdownButtonFormField<ItemModel>(
-                        decoration: const InputDecoration(
-                          labelText: 'Select Item',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      // 1. Catalog Dropdown
+                      _buildCatalogDropdown(),
+                      SizedBox(height: formFieldSpacing),
+                      // 2. SubCat Dropdown (Visible only if Catalog is selected)
+                      if (_selectedCatalog != null) ...[
+                        _buildSubCatDropdown(),
+                        SizedBox(height: formFieldSpacing),
+                      ],
+                      // 3. SubSubCat Dropdown (Visible only if SubCat is selected AND it has sub-sub categories)
+                      if (_selectedSubCat != null && _selectedSubCat!.subsub.isNotEmpty) ...[
+                        _buildSubSubCatDropdown(),
+                        SizedBox(height: formFieldSpacing),
+                      ],
+                      // 4. Final Item Dropdown (Visible if a category level that contains items is selected)
+                      if (_selectedSubCat != null && (_selectedSubCat!.items.isNotEmpty || (_selectedSubSubCat != null && _selectedSubSubCat!.items.isNotEmpty))) ...[
+                        _buildItemDropdown(),
+                        SizedBox(height: formFieldSpacing),
+                      ],
+                      // 5. Show Item Image
+                      if(_selectedItem !=null)...[
+                        InkWell(
+                          onTap: (){
+                            Get.to(ViewImage(_selectedItem!.path),transition: Transition.zoom,duration: Duration(seconds: 1));
+                          },
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: CachedNetworkImageProvider(_selectedItem!.path),
                           ),
-                          filled: true,
-                          fillColor: Colors.white,
                         ),
-                        value: _selectedItem,
-                        items: _allItems.map((ItemModel item) {
-                          return DropdownMenuItem<ItemModel>(
-                            value: item,
-                            child: Text(item.name),
-                          );
-                        }).toList(),
-                        onChanged: (ItemModel? newValue) {
-                          setState(() {
-                            _selectedItem = newValue;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Please select an item';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      // Quantity Input
-                      TextFormField(
-                        controller: _countController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: 'Quantity',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a quantity';
-                          }
-                          if (int.tryParse(value) == null) {
-                            return 'Please enter a valid number';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 24),
+                        SizedBox(height: formFieldSpacing),
+                        Text("Description : ${_selectedItem!.des}"),
+                        SizedBox(height: formFieldSpacing),
+                        Text("Price : ${_selectedItem!.price}"),
+                        SizedBox(height: formFieldSpacing),
+                      ],
 
-                      ElevatedButton(
-                        onPressed: _addItemToTable,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF07933E),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          elevation: 5,
-                        ),
-                        child: const Text(
-                          'Add Item',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
                     ],
+                  ),
+                ),
+                TextFormField(
+                  controller: _countController,
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(
+                    labelText: 'Notes',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                ElevatedButton(
+                  onPressed: _addItemToTable,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF07933E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    elevation: 5,
+                  ),
+                  child: const Text(
+                    'Add Item',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -281,115 +238,115 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
                     }),
                   ],
                 ),
-               _AddDesgin?Container(
-                 height: imagePickerHeight,
-                 decoration: BoxDecoration(
-                   color: Colors.white,
-                   borderRadius: BorderRadius.circular(imagePickerBorderRadius),
-                   border: Border.all(
-                     color: Colors.grey.shade400,
-                     style: BorderStyle.solid,
-                     width: imagePickerBorderWidth,
-                   ),
-                 ),
-                 child: GestureDetector(
-                   onTap: _pickImage,
-                   child: _images.isEmpty
-                       ? Center(
-                     child: Column(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: <Widget>[
-                         Icon(Icons.upload),
-                         SizedBox(height: uploadTextSpacing),
-                         Text(
-                           "Upload Images",
-                           style: TextStyle(
-                             fontSize: uploadTextFontSize,
-                             color: Colors.grey.shade600,
-                             fontFamily: 'Tajawal',
-                           ),
-                         ),
-                       ],
-                     ),
-                   )
-                       : SizedBox(
-                     height: imagePickerHeight,
-                     child: ListView.builder(
-                       scrollDirection: Axis.horizontal,
-                       itemCount: _images.length,
-                       itemBuilder: (context, index) {
-                         return Stack(
-                           children: [
-                             Container(
-                               width: imagePreviewWidth,
-                               margin: EdgeInsets.all(imagePreviewMargin),
-                               decoration: BoxDecoration(
-                                 borderRadius:
-                                 BorderRadius.circular(imagePreviewBorderRadius),
-                                 image: DecorationImage(
-                                   image: FileImage(_images[index]),
-                                   fit: BoxFit.cover,
-                                 ),
-                               ),
-                             ),
-                             Positioned(
-                               top: screenWidth * 0.01,
-                               right: screenWidth * 0.01,
-                               child: InkWell(
-                                 onTap: () => _removeImage(index),
-                                 child: Container(
-                                   padding: EdgeInsets.all(removeImageButtonPadding),
-                                   decoration: BoxDecoration(
-                                     color: Colors.red,
-                                     shape: BoxShape.circle,
-                                   ),
-                                   child: Icon(Icons.close,
-                                       size: removeImageButtonIconSize,
-                                       color: Colors.white),
-                                 ),
-                               ),
-                             ),
-                           ],
-                         );
-                       },
-                     ),
-                   ),
-                 ),
-               )
-                   : Text(""),
+                _AddDesgin?Container(
+                  height: imagePickerHeight,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(imagePickerBorderRadius),
+                    border: Border.all(
+                      color: Colors.grey.shade400,
+                      style: BorderStyle.solid,
+                      width: imagePickerBorderWidth,
+                    ),
+                  ),
+                  child: GestureDetector(
+                    onTap: _pickImage,
+                    child: _images.isEmpty
+                        ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.upload),
+                          SizedBox(height: uploadTextSpacing),
+                          Text(
+                            "Upload Images",
+                            style: TextStyle(
+                              fontSize: uploadTextFontSize,
+                              color: Colors.grey.shade600,
+                              fontFamily: 'Tajawal',
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                        : SizedBox(
+                      height: imagePickerHeight,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _images.length,
+                        itemBuilder: (context, index) {
+                          return Stack(
+                            children: [
+                              Container(
+                                width: imagePreviewWidth,
+                                margin: EdgeInsets.all(imagePreviewMargin),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(imagePreviewBorderRadius),
+                                  image: DecorationImage(
+                                    image: FileImage(_images[index]),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: screenWidth * 0.01,
+                                right: screenWidth * 0.01,
+                                child: InkWell(
+                                  onTap: () => _removeImage(index),
+                                  child: Container(
+                                    padding: EdgeInsets.all(removeImageButtonPadding),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(Icons.close,
+                                        size: removeImageButtonIconSize,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                )
+                    : const SizedBox.shrink(),
                 const SizedBox(height: 32),
-                Text("Notes"),
+                const Text("Notes"),
                 TextFormField(
                   controller: _notes,
                   keyboardType: TextInputType.text,
                 ),
                 const SizedBox(height: 32),
-                userModel.type=="client"?Text(""):Text("Deposit"),
-                userModel.type=="client"?Text(""):TextFormField(
+                userModel.type=="client"?const SizedBox.shrink():const Text("Deposit"),
+                userModel.type=="client"?const SizedBox.shrink():TextFormField(
                   controller: _deposit,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 32),
-                userModel.type=="client"?Text(""):DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    labelText: "Bank",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                userModel.type=="client"?const SizedBox.shrink():DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: "Bank",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
-                  ),
-                  value: _selectbank,
-                  items: bank.map((String bankValue){
-                    return DropdownMenuItem<String>(
-                      value: bankValue,
-                      child: Text(bankValue),
-                    );
-                  }).toList(),
+                    value: _selectbank,
+                    items: bank.map((String bankValue){
+                      return DropdownMenuItem<String>(
+                        value: bankValue,
+                        child: Text(bankValue),
+                      );
+                    }).toList(),
                     onChanged: (String? newValue){
-                    setState(() {
-                      _selectbank = newValue!;
-                    });
+                      setState(() {
+                        _selectbank = newValue!;
+                      });
                     },
                     validator: (value){
                       if (value == null){
@@ -400,7 +357,7 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
                 ),
                 const SizedBox(height: 32),
                 DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Receiving",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15.0)),
@@ -441,7 +398,7 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
                         if(_AddDesgin){
                           Submit2(userModel, _AddDesgin, widget.req,
                               _images, _selectedItems, _notes.text, double.parse(_deposit.text), fees, _totlaprice,
-                          _selectBranch.toString(),_selectbank.toString());
+                              _selectBranch.toString(),_selectbank.toString());
                         }
                         else{
                           Submit(userModel, _AddDesgin, widget.req, _selectedItems,
@@ -475,6 +432,153 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
       ),
     );
   }
+
+  // --- NEW CASCADING DROPDOWN WIDGETS ---
+
+  Widget _buildCatalogDropdown() {
+    return DropdownButtonFormField<Catalog>(
+      decoration: const InputDecoration(
+        labelText: 'Select Catalog',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      value: _selectedCatalog,
+      items: _fullCatalog.map((Catalog cat) {
+        return DropdownMenuItem<Catalog>(
+          value: cat,
+          child: Text(cat.cat),
+        );
+      }).toList(),
+      onChanged: (Catalog? newValue) {
+        setState(() {
+          _selectedCatalog = newValue;
+          // Reset lower levels when top level changes
+          _selectedSubCat = null;
+          _selectedSubSubCat = null;
+          _selectedItem = null;
+        });
+      },
+      validator: (value) {
+        if (value == null) {
+          return 'Please select a catalog';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildSubCatDropdown() {
+    List<SubCatModel> subCats = _selectedCatalog?.sub ?? [];
+    return DropdownButtonFormField<SubCatModel>(
+      decoration: const InputDecoration(
+        labelText: 'Select Sub-Category',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      value: _selectedSubCat,
+      items: subCats.map((SubCatModel subCat) {
+        return DropdownMenuItem<SubCatModel>(
+          value: subCat,
+          child: Text(subCat.sub),
+        );
+      }).toList(),
+      onChanged: (SubCatModel? newValue) {
+        setState(() {
+          _selectedSubCat = newValue;
+          // Reset lower levels when this level changes
+          _selectedSubSubCat = null;
+          _selectedItem = null;
+        });
+      },
+      validator: (value) {
+        if (value == null) {
+          return 'Please select a sub-category';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildSubSubCatDropdown() {
+    List<SubSubCatModel> subSubCats = _selectedSubCat?.subsub ?? [];
+    return DropdownButtonFormField<SubSubCatModel>(
+      decoration: const InputDecoration(
+        labelText: 'Select Sub-Sub-Category',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      value: _selectedSubSubCat,
+      items: subSubCats.map((SubSubCatModel subSubCat) {
+        return DropdownMenuItem<SubSubCatModel>(
+          value: subSubCat,
+          child: Text(subSubCat.subsub),
+        );
+      }).toList(),
+      onChanged: (SubSubCatModel? newValue) {
+        setState(() {
+          _selectedSubSubCat = newValue;
+          // Reset final item when this level changes
+          _selectedItem = null;
+        });
+      },
+      validator: (value) {
+        if (value == null) {
+          return 'Please select a sub-sub-category';
+        }
+        return null;
+      },
+    );
+  }
+
+  Widget _buildItemDropdown() {
+    // Items are sourced from EITHER SubSubCat (if selected) OR SubCat
+    List<CatalogItemModel> availableItems = [];
+
+    if (_selectedSubSubCat != null) {
+      availableItems = _selectedSubSubCat!.items ;
+    } else if (_selectedSubCat != null) {
+      availableItems = _selectedSubCat!.items;
+    }
+
+    return DropdownButtonFormField<CatalogItemModel>(
+      decoration: const InputDecoration(
+        labelText: 'Select Final Item',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      value: _selectedItem,
+      items: availableItems.map((CatalogItemModel item) {
+        return DropdownMenuItem<CatalogItemModel>(
+          value: item,
+          child: Text(item.name),
+        );
+      }).toList(),
+      onChanged: (CatalogItemModel? newValue) {
+        setState(() {
+          _selectedItem = newValue;
+        });
+      },
+      validator: (value) {
+        if (value == null) {
+          return 'Please select an item';
+        }
+        return null;
+      },
+    );
+  }
+  
   Widget _buildItemTable(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     List<DataRow> rows = [];
@@ -482,15 +586,15 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
       rows.add(DataRow(
         cells: [
           DataCell(Text(item.name)),
-          DataCell(Text(item.count.toString())),
-          DataCell(Text(item.price.toString())),
+          DataCell(CircleAvatar(backgroundImage: CachedNetworkImageProvider(item.path),)),
+          DataCell(Text(item.price)),
+          DataCell(Text(item.des.toString())),
           DataCell(
             IconButton(
               icon: const Icon(Icons.delete_outlined, color: Color(0xFFCE232B)),
               onPressed: () {
                 setState(() {
-                  double price=item.price*item.count;
-                  _totlaprice-=price;
+                  _totlaprice-=double.parse(item.price);
                   _selectedItems.remove(item);
                 });
               },
@@ -499,7 +603,6 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
         ],
       ));
     }
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
@@ -510,8 +613,9 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
         sortAscending: true,
         columns: [
           _buildDataColumn('Name', screenWidth),
-          _buildDataColumn('Count', screenWidth),
+          _buildDataColumn('Image', screenWidth),
           _buildDataColumn('Price', screenWidth),
+          _buildDataColumn('Notes', screenWidth),
           _buildDataColumn('Action', screenWidth),
         ],
         rows: rows,
@@ -535,5 +639,4 @@ class _CompeleteReqWidget extends State<CompeleteReqWidget>{
       ),
     );
   }
-
 }

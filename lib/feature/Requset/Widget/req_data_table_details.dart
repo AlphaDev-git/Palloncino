@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/req_data_model.dart';
@@ -18,8 +19,8 @@ Widget ReqDataTableDetails(ReqDataModel req,BuildContext context){
     rows.add(
       DataRow(cells: [
         DataCell(Text(item.name)),
-        DataCell(Text(item.count.toString())),
         DataCell(Text(item.price.toString())),
+        DataCell(Text(item.des.toString())),
       ])
     );
   }
@@ -28,8 +29,8 @@ Widget ReqDataTableDetails(ReqDataModel req,BuildContext context){
       showBottomBorder: true,
       columns: [
     _buildDataColumn('Name', screenWidth),
-    _buildDataColumn('Count', screenWidth),
     _buildDataColumn('Price', screenWidth),
+        _buildDataColumn('Notes', screenWidth),
   ], rows: rows);
 }
 DataColumn _buildDataColumn(String label, double screenWidth) {

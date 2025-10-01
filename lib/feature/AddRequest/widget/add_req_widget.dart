@@ -1,9 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pallon_app/Core/Widgets/common_widgets.dart';
 import 'package:pallon_app/feature/AddRequest/view/complete_req_view.dart';
 import 'package:pallon_app/models/req_model.dart';
+
+import '../../../models/catalog_model.dart';
+import '../functions/req_function.dart';
 
 
 class AddReqWidget extends StatefulWidget{
@@ -25,20 +27,34 @@ class _AddReqWidget extends State<AddReqWidget>{
   TextEditingController float=TextEditingController();
   TextEditingController hour=TextEditingController();
   TextEditingController date=TextEditingController();
+  List<Catalog> _fullCatalog=[];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    GetAllCatalog();
+  }
+  void GetAllCatalog()async{
+    List<Catalog> cats=[];
+    cats=await GetAllCatalogData();
+    setState(() {
+      _fullCatalog=cats;
+
+    });
+  }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    name.dispose();
-    phone.dispose();
-    type.dispose();
-    nameofevent.dispose();
-    address.dispose();
-    typeofbuilding.dispose();
-    float.dispose();
-    hour.dispose();
-    date.dispose();
+    name.clear();
+    phone.clear();
+    type.clear();
+    nameofevent.clear();
+    address.clear();
+    typeofbuilding.clear();
+    float.clear();
+    hour.clear();
+    date.clear();
   }
 
   @override
@@ -91,7 +107,7 @@ class _AddReqWidget extends State<AddReqWidget>{
                             'New Request',
                             style: TextStyle(
                               fontSize: screenWidth * 0.085,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         ],
@@ -342,23 +358,68 @@ class _AddReqWidget extends State<AddReqWidget>{
                 height: screenHeight * 0.07,
                 child: ElevatedButton(
                   onPressed: () {
-                    ReqModel req=ReqModel(
-                        Name: name.text, Phone: phone.text,
-                        TypeOfEvent: type.text,
-                        OwnerOfEvent: nameofevent.text,
-                        Hour: hour.text.toString(), Date: date.text.toString(),
-                        Address: address.text,
-                        TypeOfBuilding: typeofbuilding.text, Float: float.text);
-                    name.clear();
-                    phone.clear();
-                    type.clear();
-                    nameofevent.clear();
-                    address.clear();
-                    typeofbuilding.clear();
-                    float.clear();
-                    hour.clear();
-                    date.clear();
-                   Get.to(CompeleteReqView(req),transition: Transition.rightToLeft,duration: Duration(seconds: 1));
+                    if(name.text!=""){
+                      if(phone.text!=""){
+                        if(type.text!=""){
+                          if(nameofevent.text!=""){
+                            if(hour.text!=""){
+                              if(date.text!=""){
+                                if(address.text!=""){
+                                  if(typeofbuilding.text!=""){
+                                    if(float.text!=""){
+                                      ReqModel req=ReqModel(
+                                          Name: name.text, Phone: phone.text,
+                                          TypeOfEvent: type.text,
+                                          OwnerOfEvent: nameofevent.text,
+                                          Hour: hour.text.toString(), Date: date.text.toString(),
+                                          Address: address.text,
+                                          TypeOfBuilding: typeofbuilding.text, Float: float.text);
+                                      name.clear();
+                                      phone.clear();
+                                      type.clear();
+                                      nameofevent.clear();
+                                      address.clear();
+                                      typeofbuilding.clear();
+                                      float.clear();
+                                      hour.clear();
+                                      date.clear();
+                                      Get.to(CompeleteReqView(req,_fullCatalog),transition: Transition.rightToLeft,duration: Duration(seconds: 1));
+                                    }
+                                    else{
+                                      showErrorDialog(context, "Please Enter Float");
+                                    }
+                                  }
+                                  else{
+                                    showErrorDialog(context, "Please Enter Type of Building");
+                                  }
+                                }
+                                else{
+                                  showErrorDialog(context, "Please Enter Address");
+                                }
+                              }
+                              else{
+                                showErrorDialog(context, "Please Enter Date");
+                              }
+                            }
+                            else{
+                              showErrorDialog(context, "Please Enter Hour");
+                            }
+                          }
+                          else{
+                            showErrorDialog(context, "Please Enter Owner Of Event");
+                          }
+                        }
+                        else{
+                          showErrorDialog(context, "Please Enter Type Of Event");
+                        }
+                      }
+                      else{
+                        showErrorDialog(context, "Please Enter Phone Number");
+                      }
+                    }
+                    else{
+                      showErrorDialog(context, "Please Enter Name");
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFCE232B),

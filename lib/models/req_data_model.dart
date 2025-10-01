@@ -1,5 +1,7 @@
 import 'package:pallon_app/models/item_model.dart';
 
+import 'catalog_item_model.dart';
+
 class ReqDataModel{
   String doc;
   String address;
@@ -20,7 +22,7 @@ class ReqDataModel{
   String typeOfBuilding;
   String typeOfEvent;
   List<String> des=[];
-  List<ItemModel> item=[];
+  List<CatalogItemModel> item=[];
   String typebank;
   String branch;
   ReqDataModel({required this.doc, required this.name,required this.fees,required this.total, required this.des,required this.item,
